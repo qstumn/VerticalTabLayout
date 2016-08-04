@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/change_margin"
+        android:checkable="true"
+        android:title="更改Margin" />
+    <item
+        android:id="@+id/change_mode"
+        android:checkable="true"
+        android:title="更改Mode" />
+    <item
+        android:id="@+id/select_tab1"
+        android:title="选中tab1" />
+    <item
+        android:id="@+id/change_height"
+        android:checkable="true"
+        android:title="更改Height" />
+</menu>
