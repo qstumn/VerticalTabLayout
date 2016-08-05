@@ -21,7 +21,7 @@
 
 ## how to use:
 ###1. gradle
-    `compile 'q.rorbin:VerticalTabLayout:1.0.0'`
+`compile 'q.rorbin:VerticalTabLayout:1.0.0'`
 
 ###2. xml
 
