@@ -105,3 +105,6 @@ app:tab_margin | setTabMargin | Tab间距
 	int tabPosition = 3;
 	int badgeNum=55;
 	tablayout.setTabBadge(tabPosition,badgeNum);
+
+#LICENSE
+###[see](https://github.com/qstumn/Vertical-TabLayout/blob/master/LICENSE)
