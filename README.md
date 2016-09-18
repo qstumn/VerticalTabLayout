@@ -2,6 +2,16 @@
 一个垂直竖向的Android TabLayout  
 
 
+##Change Log
+
+    v1.1.0
+    1. 修复了TabSelectedListener会错误的多次触发的问题
+    2. 修复了removeAllTabs方法无法正确的移除掉所有tab的问题
+    3. 修改setTabSelectedListener为addTabSelectedListener
+    4. 为Indicator的移动添加了动画
+    
+    
+
 ![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo.png?raw=true)
 
 ###一些特性
@@ -21,7 +31,7 @@
 
 ## how to use:
 ###1. gradle
-`compile 'q.rorbin:VerticalTabLayout:1.0.0'`
+`compile 'q.rorbin:VerticalTabLayout:1.1.0'`
 
 ###2. xml
 
