@@ -5,6 +5,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import java.util.List;
 import q.rorbin.verticaltablayout.TabAdapter;
 import q.rorbin.verticaltablayout.VerticalTabLayout;
 import q.rorbin.verticaltablayout.widget.QTabView;
+import q.rorbin.verticaltablayout.widget.TabView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         List<String> titles;
 
         {
-            titles = new ArrayList<String>();
+            titles = new ArrayList<>();
             Collections.addAll(titles, "Android", "IOS", "Web", "JAVA", "C++",
                     ".NET", "JavaScript", "Swift", "PHP", "Python", "C#", "Groovy", "SQL", "Ruby");
         }
@@ -92,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    class MyPagerAdapter extends PagerAdapter implements TabAdapter {
+    class MyPagerAdapter extends PagerAdapter implements TabAdapter{
         List<MenuBean> menus;
 
         public MyPagerAdapter() {
@@ -110,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getBadge(int position) {
-            return position;
+            return position * 10;
         }
 
         @Override
@@ -119,7 +121,8 @@ public class MainActivity extends AppCompatActivity {
             return new QTabView.TabIcon.Builder()
                     .setIcon(menu.mSelectIcon, menu.mNormalIcon)
                     .setIconGravity(Gravity.LEFT)
-                    .setIconSize(80, 80)
+                    .setIconMargin(dp2px(5))
+                    .setIconSize(dp2px(20), dp2px(20))
                     .build();
         }
 
@@ -154,5 +157,10 @@ public class MainActivity extends AppCompatActivity {
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((View) object);
         }
+    }
+
+    protected int dp2px(float dp) {
+        final float scale = this.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
     }
 }

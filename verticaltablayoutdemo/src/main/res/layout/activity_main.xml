@@ -7,10 +7,6 @@
     android:orientation="horizontal"
     tools:context="q.rorbin.verticaltablayoutdemo.MainActivity">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,45 +15,59 @@
 
         <q.rorbin.verticaltablayout.VerticalTabLayout
             android:id="@+id/tablayout0"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="#369DE3"
+            android:visibility="visible"
             app:indicator_color="#FFFFFF"
             app:indicator_gravity="left"
             app:tab_mode="fixed" />
 
         <q.rorbin.verticaltablayout.VerticalTabLayout
             android:id="@+id/tablayout1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="#EF7062"
+            android:visibility="visible"
             app:indicator_color="#FFFFFF"
+            app:indicator_corners="5dp"
             app:indicator_gravity="right"
             app:tab_height="60dp"
             app:tab_mode="scrollable" />
 
         <q.rorbin.verticaltablayout.VerticalTabLayout
             android:id="@+id/tablayout2"
-            android:layout_width="90dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="#009687"
-            app:indicator_color="#115E56"
-            app:indicator_gravity="fill"
-            app:indicator_corners="100dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:visibility="visible"
+            app:indicator_color="#115E56"
+            app:indicator_corners="100dp"
+            app:indicator_gravity="fill"
             app:tab_margin="20dp"
             app:tab_mode="scrollable" />
 
         <q.rorbin.verticaltablayout.VerticalTabLayout
             android:id="@+id/tablayout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="#EDEDED"
+            android:visibility="visible"
             app:indicator_color="#FFFFFF"
             app:indicator_gravity="fill"
             app:tab_height="50dp"
             app:tab_mode="scrollable" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
     </LinearLayout>
 
 

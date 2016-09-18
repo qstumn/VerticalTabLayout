@@ -88,7 +88,7 @@ public class QTabView extends TabView {
         mTitle.setGravity(Gravity.CENTER);
         mTitle.setSingleLine();
         mTitle.setEllipsize(TextUtils.TruncateAt.END);
-        mTitle.setPadding(dp2px(5), dp2px(5), dp2px(5), dp2px(5));
+//        mTitle.setPadding(dp2px(5), dp2px(5), dp2px(5), dp2px(5));
         requestContainerLayout(mTabIcon.mIconGravity);
     }
 
@@ -162,15 +162,23 @@ public class QTabView extends TabView {
         switch (gravity) {
             case Gravity.LEFT:
                 mContainer.setOrientation(LinearLayout.HORIZONTAL);
-                if (mIcon != null)
+                if (mIcon != null) {
                     mContainer.addView(mIcon);
+                    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mIcon.getLayoutParams();
+                    lp.setMargins(0, 0, mTabIcon.mMargin, 0);
+                    mIcon.setLayoutParams(lp);
+                }
                 if (mTitle != null)
                     mContainer.addView(mTitle);
                 break;
             case Gravity.TOP:
                 mContainer.setOrientation(LinearLayout.VERTICAL);
-                if (mIcon != null)
+                if (mIcon != null) {
                     mContainer.addView(mIcon);
+                    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mIcon.getLayoutParams();
+                    lp.setMargins(0, 0, 0, mTabIcon.mMargin);
+                    mIcon.setLayoutParams(lp);
+                }
                 if (mTitle != null)
                     mContainer.addView(mTitle);
                 break;
@@ -178,15 +186,24 @@ public class QTabView extends TabView {
                 mContainer.setOrientation(LinearLayout.HORIZONTAL);
                 if (mTitle != null)
                     mContainer.addView(mTitle);
-                if (mIcon != null)
+                if (mIcon != null) {
                     mContainer.addView(mIcon);
+                    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mIcon.getLayoutParams();
+                    lp.setMargins(mTabIcon.mMargin, 0, 0, 0);
+                    mIcon.setLayoutParams(lp);
+                }
+
                 break;
             case Gravity.BOTTOM:
                 mContainer.setOrientation(LinearLayout.VERTICAL);
                 if (mTitle != null)
                     mContainer.addView(mTitle);
-                if (mIcon != null)
+                if (mIcon != null) {
                     mContainer.addView(mIcon);
+                    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mIcon.getLayoutParams();
+                    lp.setMargins(0, mTabIcon.mMargin, 0, 0);
+                    mIcon.setLayoutParams(lp);
+                }
                 break;
         }
     }
@@ -235,13 +252,15 @@ public class QTabView extends TabView {
         public int mIconGravity;
         public int mIconWidth;
         public int mIconHeight;
+        public int mMargin;
 
-        private TabIcon(int mSelectedIcon, int mNormalIcon, int mIconGravity, int mIconWidth, int mIconHeight) {
+        private TabIcon(int mSelectedIcon, int mNormalIcon, int mIconGravity, int mIconWidth, int mIconHeight, int mMargin) {
             this.mSelectedIcon = mSelectedIcon;
             this.mNormalIcon = mNormalIcon;
             this.mIconGravity = mIconGravity;
             this.mIconWidth = mIconWidth;
             this.mIconHeight = mIconHeight;
+            this.mMargin = mMargin;
         }
 
         public static class Builder {
@@ -250,6 +269,7 @@ public class QTabView extends TabView {
             private int mIconGravity;
             private int mIconWidth;
             private int mIconHeight;
+            public int mMargin;
 
             public Builder() {
                 mSelectedIcon = 0;
@@ -257,6 +277,7 @@ public class QTabView extends TabView {
                 mIconWidth = LayoutParams.WRAP_CONTENT;
                 mIconHeight = LayoutParams.WRAP_CONTENT;
                 mIconGravity = Gravity.LEFT;
+                mMargin = 0;
             }
 
             public Builder setIcon(int selectIconResId, int normalIconResId) {
@@ -281,8 +302,13 @@ public class QTabView extends TabView {
                 return this;
             }
 
+            public Builder setIconMargin(int margin) {
+                mMargin = margin;
+                return this;
+            }
+
             public TabIcon build() {
-                return new TabIcon(mSelectedIcon, mNormalIcon, mIconGravity, mIconWidth, mIconHeight);
+                return new TabIcon(mSelectedIcon, mNormalIcon, mIconGravity, mIconWidth, mIconHeight, mMargin);
             }
         }
     }
