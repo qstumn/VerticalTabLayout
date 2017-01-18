@@ -1,7 +1,10 @@
 package q.rorbin.verticaltablayout.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -27,6 +30,7 @@ public class QTabView extends TabView {
     private boolean mChecked;
     private LinearLayout mContainer;
     private GradientDrawable gd;
+    private Drawable mBackground;
 
     public QTabView(Context context) {
         super(context);
@@ -36,6 +40,7 @@ public class QTabView extends TabView {
         mMinHeight = dp2px(30);
         mTabIcon = new TabIcon.Builder().build();
         mTabTitle = new TabTitle.Builder(context).build();
+        setDefualtBackground();
         initView();
     }
 
@@ -121,7 +126,7 @@ public class QTabView extends TabView {
         }
         mBadge.setLayoutParams(lp);
         mBadge.setBackgroundDrawable(gd);
-        mBadge.setText(String.valueOf(num));
+        mBadge.setText(num > 99 ? "99+" : String.valueOf(num));
         mBadge.setVisibility(View.VISIBLE);
     }
 
@@ -153,8 +158,28 @@ public class QTabView extends TabView {
     }
 
     public QTabView setBackground(int resId) {
-        super.setBackgroundResource(resId);
+        if (resId <= 0) {
+            setDefualtBackground();
+        } else {
+            super.setBackgroundResource(resId);
+        }
         return this;
+    }
+
+    private void setDefualtBackground() {
+        if (mBackground == null) {
+            int[] attrs = new int[]{android.R.attr.selectableItemBackground};
+            TypedArray a = mContext.getTheme().obtainStyledAttributes(attrs);
+            mBackground = a.getDrawable(0);
+            a.recycle();
+        }
+        if (getBackground() != mBackground) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                setBackground(mBackground);
+            } else {
+                setBackgroundDrawable(mBackground);
+            }
+        }
     }
 
     private void requestContainerLayout(int gravity) {

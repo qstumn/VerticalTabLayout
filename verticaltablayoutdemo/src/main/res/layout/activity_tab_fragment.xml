@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_tab_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context="q.rorbin.verticaltablayoutdemo.TabFragmentActivity">
+
+    <q.rorbin.verticaltablayout.VerticalTabLayout
+        android:id="@+id/tablayout"
+        android:layout_width="50dp"
+        android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+</LinearLayout>

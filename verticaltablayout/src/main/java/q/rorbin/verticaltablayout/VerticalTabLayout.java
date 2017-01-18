@@ -10,22 +10,26 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import q.rorbin.verticaltablayout.util.TabFragmentManager;
 import q.rorbin.verticaltablayout.widget.QTabView;
 import q.rorbin.verticaltablayout.widget.TabIndicator;
 import q.rorbin.verticaltablayout.widget.TabView;
+
+import static android.support.v4.view.ViewPager.SCROLL_STATE_IDLE;
+import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
 
 /**
  * @author chqiu
@@ -54,6 +58,8 @@ public class VerticalTabLayout extends ScrollView {
     private List<OnTabSelectedListener> mTabSelectedListeners;
     private OnTabPageChangeListener mTabPageChangeListener;
     private DataSetObserver mPagerAdapterObserver;
+
+    private TabFragmentManager mTabFragmentManager;
 
     public VerticalTabLayout(Context context) {
         this(context, null);
@@ -99,6 +105,15 @@ public class VerticalTabLayout extends ScrollView {
 
     public TabView getTabAt(int position) {
         return (TabView) mTabStrip.getChildAt(position);
+    }
+
+    public int getTabCount() {
+        return mTabStrip.getChildCount();
+    }
+
+    public int getSelectedTabPosition() {
+        int index = mTabStrip.indexOfChild(mSelectedTab);
+        return index == -1 ? 0 : index;
     }
 
     private void addTabWithMode(TabView tabView) {
@@ -163,6 +178,8 @@ public class VerticalTabLayout extends ScrollView {
     public void addTab(TabView tabView) {
         if (tabView != null) {
             addTabWithMode(tabView);
+            int position = getSelectedTabPosition();
+            setTabSelected(position, true, false);
             tabView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -176,24 +193,34 @@ public class VerticalTabLayout extends ScrollView {
     }
 
     public void setTabSelected(int position) {
+        setTabSelected(position, true, true);
+    }
+
+    public void setTabSelected(int position, boolean updataIndicator, boolean callListener) {
         TabView view = getTabAt(position);
-        for (int i = 0; i < mTabSelectedListeners.size(); i++) {
-            OnTabSelectedListener listener = mTabSelectedListeners.get(i);
-            if (listener != null) {
-                if (view == mSelectedTab) {
-                    listener.onTabReselected(view, position);
-                } else {
-                    listener.onTabSelected(view, position);
-                }
+        boolean selected;
+        if (selected = (view != mSelectedTab)) {
+            if (mSelectedTab != null) {
+                mSelectedTab.setChecked(false);
             }
-        }
-        if (view != mSelectedTab) {
-            mSelectedTab.setChecked(false);
             view.setChecked(true);
-//            if (mViewPager == null)
-            mTabStrip.moveIndicator(position);
+            if (updataIndicator) {
+                mTabStrip.moveIndicator(position);
+            }
             mSelectedTab = view;
             scrollToTab(position);
+        }
+        if (callListener) {
+            for (int i = 0; i < mTabSelectedListeners.size(); i++) {
+                OnTabSelectedListener listener = mTabSelectedListeners.get(i);
+                if (listener != null) {
+                    if (selected) {
+                        listener.onTabSelected(view, position);
+                    } else {
+                        listener.onTabReselected(view, position);
+                    }
+                }
+            }
         }
     }
 
@@ -306,6 +333,12 @@ public class VerticalTabLayout extends ScrollView {
         }
     }
 
+    public void removeOnTabSelectedListener(OnTabSelectedListener listener) {
+        if (listener != null) {
+            mTabSelectedListeners.remove(listener);
+        }
+    }
+
     public void setTabAdapter(TabAdapter adapter) {
         removeAllTabs();
         if (adapter != null) {
@@ -318,6 +351,30 @@ public class VerticalTabLayout extends ScrollView {
         } else {
             removeAllTabs();
         }
+    }
+
+    public void setupWithFragment(FragmentManager manager, List<Fragment> fragments) {
+        setupWithFragment(manager, 0, fragments);
+    }
+
+    public void setupWithFragment(FragmentManager manager, List<Fragment> fragments, TabAdapter adapter) {
+        setupWithFragment(manager, 0, fragments, adapter);
+    }
+
+    public void setupWithFragment(FragmentManager manager, int mContainerResid, List<Fragment> fragments) {
+        if (mTabFragmentManager != null) {
+            mTabFragmentManager.detach();
+        }
+        if (mContainerResid != 0) {
+            mTabFragmentManager = new TabFragmentManager(manager, mContainerResid, fragments, this);
+        } else {
+            mTabFragmentManager = new TabFragmentManager(manager, fragments, this);
+        }
+    }
+
+    public void setupWithFragment(FragmentManager manager, int mContainerResid, List<Fragment> fragments, TabAdapter adapter) {
+        setTabAdapter(adapter);
+        setupWithFragment(manager, mContainerResid, fragments);
     }
 
     public void setupWithViewPager(@Nullable ViewPager viewPager) {
@@ -404,17 +461,6 @@ public class VerticalTabLayout extends ScrollView {
         }
     }
 
-    private int getTabCount() {
-        return mTabStrip.getChildCount();
-    }
-
-    private int getSelectedTabPosition() {
-//        if (mViewPager != null) return mViewPager.getCurrentItem();
-        int index = mTabStrip.indexOfChild(mSelectedTab);
-        return index == -1 ? 0 : index;
-    }
-
-
     private class TabStrip extends LinearLayout {
         private float mIndicatorY;
         private float mIndicatorX;
@@ -422,8 +468,7 @@ public class VerticalTabLayout extends ScrollView {
         private int mLastWidth;
         private int mIndicatorHeight;
         private Paint mIndicatorPaint;
-        //record invalidate count,used to initialize on mIndicatorBottomY
-        private long mInvalidateCount;
+        private RectF mIndicatorRect;
 
         public TabStrip(Context context) {
             super(context);
@@ -431,13 +476,8 @@ public class VerticalTabLayout extends ScrollView {
             setOrientation(LinearLayout.VERTICAL);
             mIndicatorPaint = new Paint();
             mIndicatorGravity = mIndicatorGravity == 0 ? Gravity.LEFT : mIndicatorGravity;
+            mIndicatorRect = new RectF();
             setIndicatorGravity();
-        }
-
-        @Override
-        protected void onFinishInflate() {
-            super.onFinishInflate();
-            mIndicatorBottomY = mIndicatorHeight;
         }
 
         @Override
@@ -446,10 +486,9 @@ public class VerticalTabLayout extends ScrollView {
             if (getChildCount() > 0) {
                 View childView = getChildAt(0);
                 mIndicatorHeight = childView.getMeasuredHeight();
-                if (mInvalidateCount == 0) {
+                if (mIndicatorBottomY < mIndicatorHeight) {
                     mIndicatorBottomY = mIndicatorHeight;
                 }
-                mInvalidateCount++;
             }
         }
 
@@ -545,8 +584,7 @@ public class VerticalTabLayout extends ScrollView {
                         anime.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                             @Override
                             public void onAnimationUpdate(ValueAnimator animation) {
-                                float value = Float.parseFloat(animation.getAnimatedValue().toString());
-                                mIndicatorY = value;
+                                mIndicatorY = Float.parseFloat(animation.getAnimatedValue().toString());
                                 invalidate();
                             }
                         });
@@ -557,8 +595,7 @@ public class VerticalTabLayout extends ScrollView {
                                 anime2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                                     @Override
                                     public void onAnimationUpdate(ValueAnimator animation) {
-                                        float value = Float.parseFloat(animation.getAnimatedValue().toString());
-                                        mIndicatorBottomY = value;
+                                        mIndicatorBottomY = Float.parseFloat(animation.getAnimatedValue().toString());
                                         invalidate();
                                     }
                                 });
@@ -577,12 +614,14 @@ public class VerticalTabLayout extends ScrollView {
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
             mIndicatorPaint.setColor(mColorIndicator);
-            RectF r = new RectF(mIndicatorX, mIndicatorY,
-                    mIndicatorX + mIndicatorWidth, mIndicatorBottomY);
+            mIndicatorRect.left = mIndicatorX;
+            mIndicatorRect.top = mIndicatorY;
+            mIndicatorRect.right = mIndicatorX + mIndicatorWidth;
+            mIndicatorRect.bottom = mIndicatorBottomY;
             if (mIndicatorCorners != 0) {
-                canvas.drawRoundRect(r, mIndicatorCorners, mIndicatorCorners, mIndicatorPaint);
+                canvas.drawRoundRect(mIndicatorRect, mIndicatorCorners, mIndicatorCorners, mIndicatorPaint);
             } else {
-                canvas.drawRect(r, mIndicatorPaint);
+                canvas.drawRect(mIndicatorRect, mIndicatorPaint);
             }
         }
 
@@ -594,25 +633,32 @@ public class VerticalTabLayout extends ScrollView {
     }
 
     private class OnTabPageChangeListener implements ViewPager.OnPageChangeListener {
+        private int mPreviousScrollState;
+        private int mScrollState;
 
         public OnTabPageChangeListener() {
         }
 
         @Override
         public void onPageScrollStateChanged(int state) {
-
+            mPreviousScrollState = mScrollState;
+            mScrollState = state;
         }
 
         @Override
         public void onPageScrolled(int position, float positionOffset,
                                    int positionOffsetPixels) {
-//            mTabStrip.moveIndicator(positionOffset + position);
+            boolean updataIndicator = !(mScrollState == SCROLL_STATE_SETTLING
+                    && mPreviousScrollState == SCROLL_STATE_IDLE);
+            if (updataIndicator) {
+                mTabStrip.moveIndicator(positionOffset + position);
+            }
         }
 
         @Override
         public void onPageSelected(int position) {
-            if (position != getSelectedTabPosition() && !getTabAt(position).isPressed()) {
-                setTabSelected(position);
+            if (position != getSelectedTabPosition()) {
+                setTabSelected(position, false, false);
             }
         }
     }

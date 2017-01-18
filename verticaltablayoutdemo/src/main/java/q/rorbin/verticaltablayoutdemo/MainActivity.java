@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getBadge(int position) {
-            return position * 10;
+            return position * 1000;
         }
 
         @Override
