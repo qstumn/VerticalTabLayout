@@ -4,20 +4,20 @@
 
 ##Change Log
 ```
-	v1.2.0
-	1、修复了tabmode为fixed的时候Indicator初始位置显示不正确的问题
-	2、修复了结合ViewPager使用时，Indicator没有跟随ViewPager滑动的问题
-	3、优化了Indicator的绘制方式，Indicator现在占用更少的内存并且比之前更流畅
-	4、现在TabView在没有自定义背景的时候会有默认的背景点击效果，5.0系统以上为水波纹点击效果
-	5、现在Badge在超过99的时候会显示99+而不再显示具体数字
-	6、添加了getTabCount、getSelectedTabPosition、removeOnTabSelectedListener方法
-	7、添加了setupWithFragment方法，适用于不想结合ViewPager使用的场景，VerticalTabLayout会自动在内部控制Fragment的隐藏和显示，可以下载demo查看示例
+v1.2.0
+1、修复了tabmode为fixed的时候Indicator初始位置显示不正确的问题
+2、修复了结合ViewPager使用时，Indicator没有跟随ViewPager滑动的问题
+3、优化了Indicator的绘制方式，Indicator现在占用更少的内存并且比之前更流畅
+4、现在TabView在没有自定义背景的时候会有默认的背景点击效果，5.0系统以上为水波纹点击效果
+5、现在Badge在超过99的时候会显示99+而不再显示具体数字
+6、添加了getTabCount、getSelectedTabPosition、removeOnTabSelectedListener方法
+7、添加了setupWithFragment方法，适用于不想结合ViewPager使用的场景，VerticalTabLayout会自动在内部控制Fragment的隐藏和显示，可以下载demo查看示例
 	
-	v1.1.0
-	1. 修复了TabSelectedListener会错误的多次触发的问题
-	2. 修复了removeAllTabs方法无法正确的移除掉所有tab的问题
-	3. 修改setTabSelectedListener为addTabSelectedListener
-	4. 为Indicator的移动添加了动画
+v1.1.0
+1. 修复了TabSelectedListener会错误的多次触发的问题
+2. 修复了removeAllTabs方法无法正确的移除掉所有tab的问题
+3. 修改setTabSelectedListener为addTabSelectedListener
+4. 为Indicator的移动添加了动画
 ```    
     
 
@@ -114,13 +114,13 @@ app:tab_margin | setTabMargin | Tab间距
             }
 	     });
 ```   
-  按照自己的需要进行返回相应的值即可，不需要的返回0或者null，TabIcon和TabTitle使用build模式创建。
+	按照自己的需要进行返回相应的值即可，不需要的返回0或者null，TabIcon和TabTitle使用build模式创建。
   
 - 结合ViewPager使用
 ```
 	tablayout.setupWithViewPager(viewpager);
 ```
-      ViewPager的PagerAdapter可选择实现TabAdapter接口
+	ViewPager的PagerAdapter可选择实现TabAdapter接口
       
 - 结合Fragment使用
 ```
