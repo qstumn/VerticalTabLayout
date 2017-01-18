@@ -45,7 +45,7 @@
 `compile 'q.rorbin:VerticalTabLayout:1.2.0'`
 
 ###2. xml
-
+```
     <q.rorbin.verticaltablayout.VerticalTabLayout
         android:id="@+id/tablayout"
         android:layout_width="match_parent"
@@ -55,7 +55,7 @@
         app:indicator_gravity="fill"
         app:tab_height="50dp"
         app:tab_mode="scrollable" />
-    
+```    
 
 ###3. 属性说明
 
@@ -71,8 +71,7 @@ app:tab_margin | setTabMargin | Tab间距
 
 ###4. 创建Tab的方式
 - 普通方式创建
- 
-	```
+```
 	tablayout.addTab(new QTabView(context))
 	tablayout.addOnTabSelectedListener(new VerticalTabLayout.OnTabSelectedListener() {
             @Override
@@ -85,9 +84,8 @@ app:tab_margin | setTabMargin | Tab间距
 
             }
         });
-	```
-- Adapter方式创建
-			
+```
+- Adapter方式创建			
 ```
 	tablayout.setTabAdapter(new TabAdapter() {
             @Override
@@ -114,27 +112,26 @@ app:tab_margin | setTabMargin | Tab间距
             public int getBackground(int position) {
                 return 0;
             }
-	     });	
-    ```
-    
+	     });
+```   
   按照自己的需要进行返回相应的值即可，不需要的返回0或者null，TabIcon和TabTitle使用build模式创建。
   
 - 结合ViewPager使用
-  ```
+```
 	tablayout.setupWithViewPager(viewpager);
-  ```
+```
       ViewPager的PagerAdapter可选择实现TabAdapter接口
       
 - 结合Fragment使用
 ```
 	tabLayout.setupWithFragment(FragmentManager manager, int containerResid, List<Fragment> fragments, TabAdapter adapter)
 ```
-###5. 设置badge`	
+###5. 设置badge
 ```
 	int tabPosition = 3;
 	int badgeNum=55;
 	tablayout.setTabBadge(tabPosition,badgeNum);
-	```
+```
 #LICENSE
 ```
 Copyright 2016, RorbinQiu
