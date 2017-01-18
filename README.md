@@ -3,13 +3,22 @@
 
 
 ##Change Log
-
-    v1.1.0
-    1. 修复了TabSelectedListener会错误的多次触发的问题
-    2. 修复了removeAllTabs方法无法正确的移除掉所有tab的问题
-    3. 修改setTabSelectedListener为addTabSelectedListener
-    4. 为Indicator的移动添加了动画
-    
+```
+	v1.2.0
+	1、修复了tabmode为fixed的时候Indicator初始位置显示不正确的问题
+	2、修复了结合ViewPager使用时，Indicator没有跟随ViewPager滑动的问题
+	3、优化了Indicator的绘制方式，Indicator现在占用更少的内存并且比之前更流畅
+	4、现在TabView在没有自定义背景的时候会有默认的背景点击效果，5.0系统以上为水波纹点击效果
+	5、现在Badge在超过99的时候会显示99+而不再显示具体数字
+	6、添加了getTabCount、getSelectedTabPosition、removeOnTabSelectedListener方法
+	7、添加了setupWithFragment方法，适用于不想结合ViewPager使用的场景，VerticalTabLayout会自动在内部控制Fragment的隐藏和显示，可以下载demo查看示例
+	
+	v1.1.0
+	1. 修复了TabSelectedListener会错误的多次触发的问题
+	2. 修复了removeAllTabs方法无法正确的移除掉所有tab的问题
+	3. 修改setTabSelectedListener为addTabSelectedListener
+	4. 为Indicator的移动添加了动画
+```    
     
 
 ![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo.png?raw=true)
@@ -29,9 +38,11 @@
 
 * 很方便的和ViewPager结合使用
 
+* 很方便的和Fragment结合使用
+
 ## how to use:
 ###1. gradle
-`compile 'q.rorbin:VerticalTabLayout:1.1.0'`
+`compile 'q.rorbin:VerticalTabLayout:1.2.0'`
 
 ###2. xml
 
@@ -61,9 +72,9 @@ app:tab_margin | setTabMargin | Tab间距
 ###4. 创建Tab的方式
 - 普通方式创建
  
-	``tablayout.addTab(new QTabView(context))``
-
-		tablayout.setOnTabSelectedListener(new VerticalTabLayout.OnTabSelectedListener() {
+	```
+	tablayout.addTab(new QTabView(context))
+	tablayout.addOnTabSelectedListener(new VerticalTabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabView tab, int position) {
                 
@@ -74,9 +85,11 @@ app:tab_margin | setTabMargin | Tab间距
 
             }
         });
+	```
 - Adapter方式创建
-	
-		tablayout.setTabAdapter(new TabAdapter() {
+			
+```
+	tablayout.setTabAdapter(new TabAdapter() {
             @Override
             public int getCount() {
                 return 0;
@@ -101,21 +114,27 @@ app:tab_margin | setTabMargin | Tab间距
             public int getBackground(int position) {
                 return 0;
             }
-	     });
-	     
+	     });	
+    ```
+    
   按照自己的需要进行返回相应的值即可，不需要的返回0或者null，TabIcon和TabTitle使用build模式创建。
   
 - 结合ViewPager使用
-
-    `tablayout.setupWithViewPager(viewpager);`
-    
-      ViewPager的PagerAdapter可选择实现TabAdapter接口
-
-###5. 设置badge
+  ```
+	tablayout.setupWithViewPager(viewpager);
+  ```
+      ViewPager的PagerAdapter可选择实现TabAdapter接口
+      
+- 结合Fragment使用
+```
+	tabLayout.setupWithFragment(FragmentManager manager, int containerResid, List<Fragment> fragments, TabAdapter adapter)
+```
+###5. 设置badge`	
+```
 	int tabPosition = 3;
 	int badgeNum=55;
 	tablayout.setTabBadge(tabPosition,badgeNum);
-
+	```
 #LICENSE
 ```
 Copyright 2016, RorbinQiu
