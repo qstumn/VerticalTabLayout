@@ -361,20 +361,20 @@ public class VerticalTabLayout extends ScrollView {
         setupWithFragment(manager, 0, fragments, adapter);
     }
 
-    public void setupWithFragment(FragmentManager manager, int mContainerResid, List<Fragment> fragments) {
+    public void setupWithFragment(FragmentManager manager, int containerResid, List<Fragment> fragments) {
         if (mTabFragmentManager != null) {
             mTabFragmentManager.detach();
         }
-        if (mContainerResid != 0) {
-            mTabFragmentManager = new TabFragmentManager(manager, mContainerResid, fragments, this);
+        if (containerResid != 0) {
+            mTabFragmentManager = new TabFragmentManager(manager, containerResid, fragments, this);
         } else {
             mTabFragmentManager = new TabFragmentManager(manager, fragments, this);
         }
     }
 
-    public void setupWithFragment(FragmentManager manager, int mContainerResid, List<Fragment> fragments, TabAdapter adapter) {
+    public void setupWithFragment(FragmentManager manager, int containerResid, List<Fragment> fragments, TabAdapter adapter) {
         setTabAdapter(adapter);
-        setupWithFragment(manager, mContainerResid, fragments);
+        setupWithFragment(manager, containerResid, fragments);
     }
 
     public void setupWithViewPager(@Nullable ViewPager viewPager) {
