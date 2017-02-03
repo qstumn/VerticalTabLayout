@@ -15,8 +15,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import q.rorbin.verticaltablayout.TabAdapter;
+import q.rorbin.verticaltablayout.adapter.SimpleTabAdapter;
+import q.rorbin.verticaltablayout.adapter.TabAdapter;
 import q.rorbin.verticaltablayout.VerticalTabLayout;
+import q.rorbin.verticaltablayout.util.DisplayUtil;
+import q.rorbin.verticaltablayout.widget.Badge;
 import q.rorbin.verticaltablayout.widget.QTabView;
 import q.rorbin.verticaltablayout.widget.TabView;
 
@@ -33,18 +36,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initTab0() {
-        VerticalTabLayout tablayout = (VerticalTabLayout) findViewById(R.id.tablayout0);
+        final VerticalTabLayout tablayout = (VerticalTabLayout) findViewById(R.id.tablayout0);
         tablayout.setTabAdapter(new MyTabAdapter());
+        tablayout.setTabBadge(7, 32);
+        tablayout.addOnTabSelectedListener(new VerticalTabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabView tab, int position) {
+                if (position == 5) {
+                    tablayout.getTabAt(7).getBadgeView().hide(true);
+                } else if (position == 4) {
+                    tablayout.getTabAt(7).getBadgeView().setBadgeNumber(32);
+                }
+            }
+
+            @Override
+            public void onTabReselected(TabView tab, int position) {
+
+            }
+        });
     }
 
     private void initTab1() {
         VerticalTabLayout tablayout = (VerticalTabLayout) findViewById(R.id.tablayout1);
         tablayout.setTabAdapter(new MyTabAdapter());
+        tablayout.getTabAt(3).setBadge(new TabView.TabBadge.Builder().setBadgeGravity(Gravity.END | Gravity.BOTTOM)
+                .setBadgeNumber(999).setColorBackground(0xff2faae5)
+                .setOnDragStateChangedListener(new Badge.OnDragStateChangedListener() {
+                    @Override
+                    public void onDragStateChanged(int dragState, Badge badge, View targetView) {
+                        if (dragState == STATE_SUCCEED) {
+                            badge.setBadgeNumber(-1);
+                        }
+                    }
+                }).build());
     }
 
     private void initTab2() {
         VerticalTabLayout tablayout = (VerticalTabLayout) findViewById(R.id.tablayout2);
         tablayout.setTabAdapter(new MyTabAdapter());
+        tablayout.setTabBadge(2, -1);
+        tablayout.setTabBadge(8, -1);
     }
 
     private void initTab3() {
@@ -70,19 +101,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public int getBadge(int position) {
-            if (position == 5) return position;
-            return 0;
-        }
-
-        @Override
-        public QTabView.TabIcon getIcon(int position) {
+        public TabView.TabBadge getBadge(int position) {
+            if (position == 5) return new QTabView.TabBadge.Builder().setBadgeNumber(3)
+                    .setOnDragStateChangedListener(new Badge.OnDragStateChangedListener() {
+                        @Override
+                        public void onDragStateChanged(int dragState, Badge badge, View targetView) {
+                        }
+                    }).build();
             return null;
         }
 
         @Override
-        public QTabView.TabTitle getTitle(int position) {
-            return new QTabView.TabTitle.Builder(MainActivity.this)
+        public TabView.TabIcon getIcon(int position) {
+            return null;
+        }
+
+        @Override
+        public TabView.TabTitle getTitle(int position) {
+            return new TabView.TabTitle.Builder()
                     .setContent(titles.get(position))
                     .setTextColor(Color.WHITE, Color.WHITE)
                     .build();
@@ -94,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    class MyPagerAdapter extends PagerAdapter implements TabAdapter{
+    class MyPagerAdapter extends PagerAdapter implements TabAdapter {
         List<MenuBean> menus;
 
         public MyPagerAdapter() {
@@ -111,14 +147,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public int getBadge(int position) {
-            return position * 1000;
+        public TabView.TabBadge getBadge(int position) {
+            return null;
         }
 
         @Override
-        public QTabView.TabIcon getIcon(int position) {
+        public TabView.TabIcon getIcon(int position) {
             MenuBean menu = menus.get(position);
-            return new QTabView.TabIcon.Builder()
+            return new TabView.TabIcon.Builder()
                     .setIcon(menu.mSelectIcon, menu.mNormalIcon)
                     .setIconGravity(Gravity.LEFT)
                     .setIconMargin(dp2px(5))
@@ -127,9 +163,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public QTabView.TabTitle getTitle(int position) {
+        public TabView.TabTitle getTitle(int position) {
             MenuBean menu = menus.get(position);
-            return new QTabView.TabTitle.Builder(MainActivity.this)
+            return new TabView.TabTitle.Builder()
                     .setContent(menu.mTitle)
                     .setTextColor(0xFF36BC9B, 0xFF757575)
                     .build();
@@ -137,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getBackground(int position) {
-            return 0;
+            return -1;
         }
 
         @Override

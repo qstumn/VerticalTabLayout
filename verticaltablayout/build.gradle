@@ -23,7 +23,7 @@ publish {
     userOrg = 'qstumn'
     groupId = 'q.rorbin'
     artifactId = 'VerticalTabLayout'
-    publishVersion = '1.2.0'
+    publishVersion = '1.2.1'
     desc = 'This is a vertical direction TabLayout'
     website = 'https://github.com/qstumn/VerticalTabLayout'
 }

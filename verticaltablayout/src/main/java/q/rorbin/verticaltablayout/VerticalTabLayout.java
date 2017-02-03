@@ -23,6 +23,8 @@ import android.widget.ScrollView;
 import java.util.ArrayList;
 import java.util.List;
 
+import q.rorbin.verticaltablayout.adapter.TabAdapter;
+import q.rorbin.verticaltablayout.util.DisplayUtil;
 import q.rorbin.verticaltablayout.util.TabFragmentManager;
 import q.rorbin.verticaltablayout.widget.QTabView;
 import q.rorbin.verticaltablayout.widget.TabIndicator;
@@ -77,7 +79,7 @@ public class VerticalTabLayout extends ScrollView {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.VerticalTabLayout);
         mColorIndicator = typedArray.getColor(R.styleable.VerticalTabLayout_indicator_color,
                 context.getResources().getColor(R.color.colorAccent));
-        mIndicatorWidth = (int) typedArray.getDimension(R.styleable.VerticalTabLayout_indicator_width, dp2px(3));
+        mIndicatorWidth = (int) typedArray.getDimension(R.styleable.VerticalTabLayout_indicator_width, DisplayUtil.dp2px(context, 3));
         mIndicatorCorners = typedArray.getDimension(R.styleable.VerticalTabLayout_indicator_corners, 0);
         mIndicatorGravity = typedArray.getInteger(R.styleable.VerticalTabLayout_indicator_gravity, Gravity.LEFT);
         mTabMargin = (int) typedArray.getDimension(R.styleable.VerticalTabLayout_tab_margin, 0);
@@ -178,8 +180,6 @@ public class VerticalTabLayout extends ScrollView {
     public void addTab(TabView tabView) {
         if (tabView != null) {
             addTabWithMode(tabView);
-            int position = getSelectedTabPosition();
-            setTabSelected(position, true, false);
             tabView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -196,7 +196,7 @@ public class VerticalTabLayout extends ScrollView {
         setTabSelected(position, true, true);
     }
 
-    public void setTabSelected(int position, boolean updataIndicator, boolean callListener) {
+    private void setTabSelected(int position, boolean updataIndicator, boolean callListener) {
         TabView view = getTabAt(position);
         boolean selected;
         if (selected = (view != mSelectedTab)) {
@@ -225,7 +225,7 @@ public class VerticalTabLayout extends ScrollView {
     }
 
     public void setTabBadge(int tabPosition, int badgeNum) {
-        getTabAt(tabPosition).setBadge(badgeNum);
+        getTabAt(tabPosition).getBadgeView().setBadgeNumber(badgeNum);
     }
 
     public void setTabMode(int mode) {
@@ -445,7 +445,7 @@ public class VerticalTabLayout extends ScrollView {
                 } else {
                     String title = mPagerAdapter.getPageTitle(i) == null ? "tab" + i : mPagerAdapter.getPageTitle(i).toString();
                     addTab(new QTabView(mContext).setTitle(
-                            new QTabView.TabTitle.Builder(mContext).setContent(title).build()));
+                            new QTabView.TabTitle.Builder().setContent(title).build()));
                 }
             }
 
@@ -475,6 +475,7 @@ public class VerticalTabLayout extends ScrollView {
             setWillNotDraw(false);
             setOrientation(LinearLayout.VERTICAL);
             mIndicatorPaint = new Paint();
+            mIndicatorPaint.setAntiAlias(true);
             mIndicatorGravity = mIndicatorGravity == 0 ? Gravity.LEFT : mIndicatorGravity;
             mIndicatorRect = new RectF();
             setIndicatorGravity();
@@ -625,11 +626,6 @@ public class VerticalTabLayout extends ScrollView {
             }
         }
 
-    }
-
-    protected int dp2px(float dp) {
-        final float scale = mContext.getResources().getDisplayMetrics().density;
-        return (int) (dp * scale + 0.5f);
     }
 
     private class OnTabPageChangeListener implements ViewPager.OnPageChangeListener {

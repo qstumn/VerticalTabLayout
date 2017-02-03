@@ -7,11 +7,9 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.List;
 
-import q.rorbin.verticaltablayout.TabAdapter;
+import q.rorbin.verticaltablayout.adapter.TabAdapter;
 import q.rorbin.verticaltablayout.VerticalTabLayout;
 import q.rorbin.verticaltablayout.widget.QTabView;
-
-import static q.rorbin.verticaltablayoutdemo.R.id.fragment_container;
 
 public class TabFragmentActivity extends AppCompatActivity {
     private VerticalTabLayout tabLayout;
@@ -30,8 +28,8 @@ public class TabFragmentActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public int getBadge(int position) {
-                        return 0;
+                    public QTabView.TabBadge getBadge(int position) {
+                        return null;
                     }
 
                     @Override
@@ -41,7 +39,7 @@ public class TabFragmentActivity extends AppCompatActivity {
 
                     @Override
                     public QTabView.TabTitle getTitle(int position) {
-                        return new QTabView.TabTitle.Builder(getApplicationContext()).setContent(String.valueOf(position)).build();
+                        return new QTabView.TabTitle.Builder().setContent(String.valueOf(position)).build();
                     }
 
                     @Override

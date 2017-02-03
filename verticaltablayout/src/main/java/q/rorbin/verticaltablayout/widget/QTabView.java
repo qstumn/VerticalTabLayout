@@ -12,8 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import q.rorbin.verticaltablayout.R;
-
+import q.rorbin.verticaltablayout.util.DisplayUtil;
 
 /**
  * @author chqiu
@@ -23,25 +22,29 @@ public class QTabView extends TabView {
     private Context mContext;
     private ImageView mIcon;
     private TextView mTitle;
-    private TextView mBadge;
+    private QBadgeView mBadgeView;
+    //    private TextView mBadge;
     private int mMinHeight;
     private TabIcon mTabIcon;
     private TabTitle mTabTitle;
+    private TabBadge mTabBadge;
     private boolean mChecked;
     private LinearLayout mContainer;
     private GradientDrawable gd;
     private Drawable mBackground;
+
 
     public QTabView(Context context) {
         super(context);
         mContext = context;
         gd = new GradientDrawable();
         gd.setColor(0xFFE84E40);
-        mMinHeight = dp2px(30);
+        mMinHeight = DisplayUtil.dp2px(context, 30);
         mTabIcon = new TabIcon.Builder().build();
-        mTabTitle = new TabTitle.Builder(context).build();
-        setDefualtBackground();
+        mTabTitle = new TabTitle.Builder().build();
+        mTabBadge = new TabBadge.Builder().build();
         initView();
+        setDefaultBackground();
     }
 
     @Override
@@ -57,29 +60,32 @@ public class QTabView extends TabView {
         initContainer();
         initIconView();
         initTitleView();
-        initBadge();
         addView(mContainer);
-        addView(mBadge);
+        initBadge();
     }
 
     private void initContainer() {
         mContainer = new LinearLayout(mContext);
         mContainer.setOrientation(LinearLayout.HORIZONTAL);
         mContainer.setMinimumHeight(mMinHeight);
-        mContainer.setPadding(dp2px(5), dp2px(5), dp2px(5), dp2px(5));
+        mContainer.setPadding(DisplayUtil.dp2px(mContext, 5), DisplayUtil.dp2px(mContext, 5),
+                DisplayUtil.dp2px(mContext, 5), DisplayUtil.dp2px(mContext, 5));
         mContainer.setGravity(Gravity.CENTER);
     }
 
+
     private void initBadge() {
-        mBadge = new TextView(mContext);
-        LayoutParams params2 = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        params2.gravity = Gravity.RIGHT | Gravity.TOP;
-        params2.setMargins(0, dp2px(5), dp2px(5), 0);
-        mBadge.setLayoutParams(params2);
-        mBadge.setGravity(Gravity.CENTER);
-        mBadge.setTextColor(0xFFFFFFFF);
-        mBadge.setTextSize(9);
-        setBadge(0);
+        if (mBadgeView != null) removeView(mBadgeView);
+        mBadgeView = QBadgeView.bindTab(mContext, this);
+        mBadgeView.setBadgeBackgroundColor(mTabBadge.getColorBackground());
+        mBadgeView.setBadgeGravity(mTabBadge.getBadgeGravity());
+        mBadgeView.setBadgeNumber(mTabBadge.getBadgeNumber());
+        mBadgeView.setBadgeNumberColor(mTabBadge.getColorBadgeNumber());
+        mBadgeView.setBadgeNumberSize(mTabBadge.getBadgeNumberSize(), true);
+        mBadgeView.setBadgePadding(mTabBadge.getBadgePadding(), true);
+        mBadgeView.setExactMode(mTabBadge.isExactMode());
+        mBadgeView.setGravityOffset(mTabBadge.getGravityOffset(), true);
+        mBadgeView.setOnDragStateChangedListener(mTabBadge.getOnDragStateChangedListener());
     }
 
     private void initTitleView() {
@@ -87,60 +93,44 @@ public class QTabView extends TabView {
         mTitle = new TextView(mContext);
         LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         mTitle.setLayoutParams(params);
-        mTitle.setTextColor(mTabTitle.mColorNormal);
-        mTitle.setTextSize(mTabTitle.mTitleTextSize);
-        mTitle.setText(mTabTitle.mContent);
+        mTitle.setTextColor(mTabTitle.getColorNormal());
+        mTitle.setTextSize(mTabTitle.getTitleTextSize());
+        mTitle.setText(mTabTitle.getContent());
         mTitle.setGravity(Gravity.CENTER);
         mTitle.setSingleLine();
         mTitle.setEllipsize(TextUtils.TruncateAt.END);
-//        mTitle.setPadding(dp2px(5), dp2px(5), dp2px(5), dp2px(5));
-        requestContainerLayout(mTabIcon.mIconGravity);
+        requestContainerLayout(mTabIcon.getIconGravity());
     }
 
     private void initIconView() {
         if (mIcon != null) mContainer.removeView(mIcon);
         mIcon = new ImageView(mContext);
-        LayoutParams params = new LayoutParams(mTabIcon.mIconWidth, mTabIcon.mIconHeight);
+        LayoutParams params = new LayoutParams(mTabIcon.getIconWidth(), mTabIcon.getIconHeight());
         mIcon.setLayoutParams(params);
-        if (mTabIcon.mNormalIcon != 0) {
-            mIcon.setImageResource(mTabIcon.mNormalIcon);
+        if (mTabIcon.getNormalIcon() != 0) {
+            mIcon.setImageResource(mTabIcon.getNormalIcon());
         } else {
             mIcon.setVisibility(View.GONE);
         }
-        requestContainerLayout(mTabIcon.mIconGravity);
+        requestContainerLayout(mTabIcon.getIconGravity());
     }
 
-    private void setBadgeImp(int num) {
-        LayoutParams lp = (LayoutParams) mBadge.getLayoutParams();
-        if (num <= 9) {
-            lp.width = dp2px(12);
-            lp.height = dp2px(12);
-            gd.setShape(GradientDrawable.OVAL);
-            mBadge.setPadding(0, 0, 0, 0);
-        } else {
-            lp.width = LayoutParams.WRAP_CONTENT;
-            lp.height = LayoutParams.WRAP_CONTENT;
-            mBadge.setPadding(dp2px(3), 0, dp2px(3), 0);
-            gd.setShape(GradientDrawable.RECTANGLE);
-            gd.setCornerRadius(dp2px(6));
-        }
-        mBadge.setLayoutParams(lp);
-        mBadge.setBackgroundDrawable(gd);
-        mBadge.setText(num > 99 ? "99+" : String.valueOf(num));
-        mBadge.setVisibility(View.VISIBLE);
-    }
+//    @Override
+//    public QTabView setBadge(int num) {
+//        getBadgeView().setBadgeNumber(num);
+//        return this;
+//    }
 
     @Override
-    public QTabView setBadge(int num) {
-        if (num > 0) {
-            setBadgeImp(num);
-        } else {
-            mBadge.setText("");
-            mBadge.setVisibility(View.GONE);
+    public QTabView setBadge(TabBadge badge) {
+        if (badge != null) {
+            mTabBadge = badge;
         }
+        initBadge();
         return this;
     }
 
+    @Override
     public QTabView setIcon(TabIcon icon) {
         if (icon != null)
             mTabIcon = icon;
@@ -149,6 +139,7 @@ public class QTabView extends TabView {
         return this;
     }
 
+    @Override
     public QTabView setTitle(TabTitle title) {
         if (title != null)
             mTabTitle = title;
@@ -157,16 +148,67 @@ public class QTabView extends TabView {
         return this;
     }
 
+    /**
+     * @param resId The Drawable res to use as the background, if less than 0 will to remove the
+     *              background
+     */
+    @Override
     public QTabView setBackground(int resId) {
-        if (resId <= 0) {
-            setDefualtBackground();
+        if (resId == 0) {
+            setDefaultBackground();
+        } else if (resId <= 0) {
+            setBackground(null);
         } else {
-            super.setBackgroundResource(resId);
+            mContainer.setBackgroundResource(resId);
         }
         return this;
     }
 
-    private void setDefualtBackground() {
+    @Override
+    public TabBadge getBadge() {
+        return mTabBadge;
+    }
+
+    @Override
+    public TabIcon getIcon() {
+        return mTabIcon;
+    }
+
+    @Override
+    public TabTitle getTitle() {
+        return mTabTitle;
+    }
+
+    @Override
+    public ImageView getIconView() {
+        return mIcon;
+    }
+
+    @Override
+    public TextView getTitleView() {
+        return mTitle;
+    }
+
+    @Override
+    public Badge getBadgeView() {
+        return mBadgeView;
+    }
+
+    @Override
+    public void setBackground(Drawable background) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            mContainer.setBackground(background);
+        } else {
+            mContainer.setBackgroundDrawable(background);
+        }
+    }
+
+    @Override
+    public void setBackgroundResource(int resid) {
+        setBackground(resid);
+    }
+
+    private void setDefaultBackground() {
         if (mBackground == null) {
             int[] attrs = new int[]{android.R.attr.selectableItemBackground};
             TypedArray a = mContext.getTheme().obtainStyledAttributes(attrs);
@@ -175,11 +217,15 @@ public class QTabView extends TabView {
         }
         if (getBackground() != mBackground) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                setBackground(mBackground);
+                mContainer.setBackground(mBackground);
             } else {
-                setBackgroundDrawable(mBackground);
+                mContainer.setBackgroundDrawable(mBackground);
             }
         }
+    }
+
+    public Drawable getBackground() {
+        return mContainer.getBackground();
     }
 
     private void requestContainerLayout(int gravity) {
@@ -190,7 +236,7 @@ public class QTabView extends TabView {
                 if (mIcon != null) {
                     mContainer.addView(mIcon);
                     LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mIcon.getLayoutParams();
-                    lp.setMargins(0, 0, mTabIcon.mMargin, 0);
+                    lp.setMargins(0, 0, mTabIcon.getMargin(), 0);
                     mIcon.setLayoutParams(lp);
                 }
                 if (mTitle != null)
@@ -201,7 +247,7 @@ public class QTabView extends TabView {
                 if (mIcon != null) {
                     mContainer.addView(mIcon);
                     LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mIcon.getLayoutParams();
-                    lp.setMargins(0, 0, 0, mTabIcon.mMargin);
+                    lp.setMargins(0, 0, 0, mTabIcon.getMargin());
                     mIcon.setLayoutParams(lp);
                 }
                 if (mTitle != null)
@@ -214,7 +260,7 @@ public class QTabView extends TabView {
                 if (mIcon != null) {
                     mContainer.addView(mIcon);
                     LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mIcon.getLayoutParams();
-                    lp.setMargins(mTabIcon.mMargin, 0, 0, 0);
+                    lp.setMargins(mTabIcon.getMargin(), 0, 0, 0);
                     mIcon.setLayoutParams(lp);
                 }
 
@@ -226,16 +272,11 @@ public class QTabView extends TabView {
                 if (mIcon != null) {
                     mContainer.addView(mIcon);
                     LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mIcon.getLayoutParams();
-                    lp.setMargins(0, mTabIcon.mMargin, 0, 0);
+                    lp.setMargins(0, mTabIcon.getMargin(), 0, 0);
                     mIcon.setLayoutParams(lp);
                 }
                 break;
         }
-    }
-
-    protected int dp2px(float dp) {
-        final float scale = mContext.getResources().getDisplayMetrics().density;
-        return (int) (dp * scale + 0.5f);
     }
 
     @Override
@@ -243,18 +284,18 @@ public class QTabView extends TabView {
         mChecked = checked;
         refreshDrawableState();
         if (mChecked) {
-            mTitle.setTextColor(mTabTitle.mColorSelected);
-            if (mTabIcon.mSelectedIcon != 0) {
+            mTitle.setTextColor(mTabTitle.getColorSelected());
+            if (mTabIcon.getSelectedIcon() != 0) {
                 mIcon.setVisibility(View.VISIBLE);
-                mIcon.setImageResource(mTabIcon.mSelectedIcon);
+                mIcon.setImageResource(mTabIcon.getSelectedIcon());
             } else {
                 mIcon.setVisibility(View.GONE);
             }
         } else {
-            mTitle.setTextColor(mTabTitle.mColorNormal);
-            if (mTabIcon.mNormalIcon != 0) {
+            mTitle.setTextColor(mTabTitle.getColorNormal());
+            if (mTabIcon.getNormalIcon() != 0) {
                 mIcon.setVisibility(View.VISIBLE);
-                mIcon.setImageResource(mTabIcon.mNormalIcon);
+                mIcon.setImageResource(mTabIcon.getNormalIcon());
             } else {
                 mIcon.setVisibility(View.GONE);
             }
@@ -271,118 +312,15 @@ public class QTabView extends TabView {
         setChecked(!mChecked);
     }
 
-    public static class TabIcon {
-        public int mSelectedIcon;
-        public int mNormalIcon;
-        public int mIconGravity;
-        public int mIconWidth;
-        public int mIconHeight;
-        public int mMargin;
-
-        private TabIcon(int mSelectedIcon, int mNormalIcon, int mIconGravity, int mIconWidth, int mIconHeight, int mMargin) {
-            this.mSelectedIcon = mSelectedIcon;
-            this.mNormalIcon = mNormalIcon;
-            this.mIconGravity = mIconGravity;
-            this.mIconWidth = mIconWidth;
-            this.mIconHeight = mIconHeight;
-            this.mMargin = mMargin;
-        }
-
-        public static class Builder {
-            private int mSelectedIcon;
-            private int mNormalIcon;
-            private int mIconGravity;
-            private int mIconWidth;
-            private int mIconHeight;
-            public int mMargin;
-
-            public Builder() {
-                mSelectedIcon = 0;
-                mNormalIcon = 0;
-                mIconWidth = LayoutParams.WRAP_CONTENT;
-                mIconHeight = LayoutParams.WRAP_CONTENT;
-                mIconGravity = Gravity.LEFT;
-                mMargin = 0;
+    @Override
+    public void setOnClickListener(final OnClickListener l) {
+        mContainer.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                l.onClick(QTabView.this);
             }
-
-            public Builder setIcon(int selectIconResId, int normalIconResId) {
-                mSelectedIcon = selectIconResId;
-                mNormalIcon = normalIconResId;
-                return this;
-            }
-
-            public Builder setIconSize(int width, int height) {
-                mIconWidth = width;
-                mIconHeight = height;
-                return this;
-            }
-
-            public Builder setIconGravity(int gravity) {
-                if (gravity != Gravity.LEFT && gravity != Gravity.RIGHT
-                        & gravity != Gravity.TOP & gravity != Gravity.BOTTOM) {
-                    throw new IllegalStateException("iconGravity only support Gravity.LEFT " +
-                            "or Gravity.RIGHT or Gravity.TOP or Gravity.BOTTOM");
-                }
-                mIconGravity = gravity;
-                return this;
-            }
-
-            public Builder setIconMargin(int margin) {
-                mMargin = margin;
-                return this;
-            }
-
-            public TabIcon build() {
-                return new TabIcon(mSelectedIcon, mNormalIcon, mIconGravity, mIconWidth, mIconHeight, mMargin);
-            }
-        }
+        });
     }
 
-    public static class TabTitle {
-        public int mColorSelected;
-        public int mColorNormal;
-        public int mTitleTextSize;
-        public String mContent;
 
-        private TabTitle(int mColorSelected, int mColorNormal, int mTitleTextSize, String mContent) {
-            this.mColorSelected = mColorSelected;
-            this.mColorNormal = mColorNormal;
-            this.mTitleTextSize = mTitleTextSize;
-            this.mContent = mContent;
-        }
-
-        public static class Builder {
-            private int mColorSelected;
-            private int mColorNormal;
-            private int mTitleTextSize;
-            private String mContent;
-
-            public Builder(Context context) {
-                this.mColorSelected = context.getResources().getColor(R.color.colorAccent);
-                this.mColorNormal = 0xFF757575;
-                this.mTitleTextSize = 16;
-                this.mContent = "title";
-            }
-
-            public Builder setTextColor(int colorSelected, int colorNormal) {
-                mColorSelected = colorSelected;
-                mColorNormal = colorNormal;
-                return this;
-            }
-
-            public Builder setTextSize(int sizeSp) {
-                mTitleTextSize = sizeSp;
-                return this;
-            }
-
-            public Builder setContent(String content) {
-                mContent = content;
-                return this;
-            }
-
-            public TabTitle build() {
-                return new TabTitle(mColorSelected, mColorNormal, mTitleTextSize, mContent);
-            }
-        }
-    }
 }
