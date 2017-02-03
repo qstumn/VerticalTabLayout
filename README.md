@@ -94,17 +94,17 @@ app:tab_margin | setTabMargin | Tab间距
             }
 
             @Override
-            public TabBadge getBadge(int position) {
+            public TabView.TabBadge getBadge(int position) {
                 return null;
             }
 
             @Override
-            public QTabView.TabIcon getIcon(int position) {
+            public TabView.TabIcon getIcon(int position) {
                 return null;
             }
 
             @Override
-            public QTabView.TabTitle getTitle(int position) {
+            public TabView.TabTitle getTitle(int position) {
                 return null;
             }
 
