@@ -94,8 +94,8 @@ app:tab_margin | setTabMargin | Tab间距
             }
 
             @Override
-            public int getBadge(int position) {
-                return 0;
+            public TabBadge getBadge(int position) {
+                return null;
             }
 
             @Override
@@ -114,7 +114,7 @@ app:tab_margin | setTabMargin | Tab间距
             }
 	     });
 ```   
-	按照自己的需要进行返回相应的值即可，不需要的返回0或者null，TabIcon和TabTitle使用build模式创建。
+	按照自己的需要进行返回相应的值即可，不需要的返回0或者null，TabBadge、TabIcon、TabTitle使用build模式创建。
   
 - 结合ViewPager使用
 ```
