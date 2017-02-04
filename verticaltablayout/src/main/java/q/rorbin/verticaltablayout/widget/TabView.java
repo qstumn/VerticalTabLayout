@@ -83,7 +83,7 @@ public abstract class TabView extends FrameLayout implements Checkable {
                 mNormalIcon = 0;
                 mIconWidth = LayoutParams.WRAP_CONTENT;
                 mIconHeight = LayoutParams.WRAP_CONTENT;
-                mIconGravity = Gravity.LEFT;
+                mIconGravity = Gravity.START;
                 mMargin = 0;
             }
 
@@ -100,10 +100,10 @@ public abstract class TabView extends FrameLayout implements Checkable {
             }
 
             public Builder setIconGravity(int gravity) {
-                if (gravity != Gravity.LEFT && gravity != Gravity.RIGHT
+                if (gravity != Gravity.START && gravity != Gravity.END
                         & gravity != Gravity.TOP & gravity != Gravity.BOTTOM) {
-                    throw new IllegalStateException("iconGravity only support Gravity.LEFT " +
-                            "or Gravity.RIGHT or Gravity.TOP or Gravity.BOTTOM");
+                    throw new IllegalStateException("iconGravity only support Gravity.START " +
+                            "or Gravity.END or Gravity.TOP or Gravity.BOTTOM");
                 }
                 mIconGravity = gravity;
                 return this;
@@ -185,11 +185,11 @@ public abstract class TabView extends FrameLayout implements Checkable {
             this.mBuilder = mBuilder;
         }
 
-        public int getColorBackground() {
+        public int getBackgroundColor() {
             return mBuilder.colorBackground;
         }
 
-        public int getColorBadgeNumber() {
+        public int getBadgeNumberColor() {
             return mBuilder.colorBadgeNumber;
         }
 
@@ -257,12 +257,12 @@ public abstract class TabView extends FrameLayout implements Checkable {
                 return this;
             }
 
-            public Builder setColorBackground(int colorBackground) {
+            public Builder setBackgroundColor(int colorBackground) {
                 this.colorBackground = colorBackground;
                 return this;
             }
 
-            public Builder setColorBadgeNumber(int colorBadgeNumber) {
+            public Builder setBadgeNumberColor(int colorBadgeNumber) {
                 this.colorBadgeNumber = colorBadgeNumber;
                 return this;
             }

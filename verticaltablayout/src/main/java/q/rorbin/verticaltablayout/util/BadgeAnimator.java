@@ -18,18 +18,18 @@ import q.rorbin.verticaltablayout.widget.QBadgeView;
  */
 
 public class BadgeAnimator extends ValueAnimator {
-    private BombFragment[][] mFragments;
+    private BitmapFragment[][] mFragments;
     private WeakReference<QBadgeView> mWeakBadge;
 
     private BadgeAnimator(QBadgeView badge) {
         mWeakBadge = new WeakReference<>(badge);
     }
 
-    public static BadgeAnimator startBomb(Bitmap badgeBitmap, PointF center, QBadgeView badge) {
+    public static BadgeAnimator start(Bitmap badgeBitmap, PointF center, QBadgeView badge) {
         final BadgeAnimator anime = new BadgeAnimator(badge);
         anime.setFloatValues(0f, 1f);
         anime.setDuration(500);
-        anime.mFragments = anime.getBombFragments(badgeBitmap, center);
+        anime.mFragments = anime.getFragments(badgeBitmap, center);
         anime.addUpdateListener(new AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -57,7 +57,7 @@ public class BadgeAnimator extends ValueAnimator {
     public void draw(Canvas canvas) {
         for (int i = 0; i < mFragments.length; i++) {
             for (int j = 0; j < mFragments[i].length; j++) {
-                BombFragment bf = mFragments[i][j];
+                BitmapFragment bf = mFragments[i][j];
                 float value = Float.parseFloat(getAnimatedValue().toString());
                 bf.updata(value, canvas);
             }
@@ -65,16 +65,16 @@ public class BadgeAnimator extends ValueAnimator {
     }
 
 
-    private BombFragment[][] getBombFragments(Bitmap badgeBitmap, PointF center) {
+    private BitmapFragment[][] getFragments(Bitmap badgeBitmap, PointF center) {
         int width = badgeBitmap.getWidth();
         int height = badgeBitmap.getHeight();
         float fragmentSize = Math.max(width, height) / 8f;
         float startX = center.x - badgeBitmap.getWidth() / 2f;
         float startY = center.y - badgeBitmap.getHeight() / 2f;
-        BombFragment[][] fragments = new BombFragment[(int) (height / fragmentSize)][(int) (width / fragmentSize)];
+        BitmapFragment[][] fragments = new BitmapFragment[(int) (height / fragmentSize)][(int) (width / fragmentSize)];
         for (int i = 0; i < fragments.length; i++) {
             for (int j = 0; j < fragments[i].length; j++) {
-                BombFragment bf = new BombFragment();
+                BitmapFragment bf = new BitmapFragment();
                 bf.color = badgeBitmap.getPixel((int) (j * fragmentSize), (int) (i * fragmentSize));
                 bf.x = startX + j * fragmentSize;
                 bf.y = startY + i * fragmentSize;
@@ -87,7 +87,7 @@ public class BadgeAnimator extends ValueAnimator {
         return fragments;
     }
 
-    private class BombFragment {
+    private class BitmapFragment {
         Random random;
         float x;
         float y;
@@ -96,7 +96,7 @@ public class BadgeAnimator extends ValueAnimator {
         int maxSize;
         Paint paint;
 
-        public BombFragment() {
+        public BitmapFragment() {
             paint = new Paint();
             paint.setAntiAlias(true);
             paint.setStyle(Paint.Style.FILL);

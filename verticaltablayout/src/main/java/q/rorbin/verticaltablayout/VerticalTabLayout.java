@@ -82,6 +82,13 @@ public class VerticalTabLayout extends ScrollView {
         mIndicatorWidth = (int) typedArray.getDimension(R.styleable.VerticalTabLayout_indicator_width, DisplayUtil.dp2px(context, 3));
         mIndicatorCorners = typedArray.getDimension(R.styleable.VerticalTabLayout_indicator_corners, 0);
         mIndicatorGravity = typedArray.getInteger(R.styleable.VerticalTabLayout_indicator_gravity, Gravity.LEFT);
+        if (mIndicatorGravity == 3) {
+            mIndicatorGravity = Gravity.LEFT;
+        } else if (mIndicatorGravity == 5) {
+            mIndicatorGravity = Gravity.RIGHT;
+        } else if (mIndicatorGravity == 119) {
+            mIndicatorGravity = Gravity.FILL;
+        }
         mTabMargin = (int) typedArray.getDimension(R.styleable.VerticalTabLayout_tab_margin, 0);
         mTabMode = typedArray.getInteger(R.styleable.VerticalTabLayout_tab_mode, TAB_MODE_FIXED);
         mTabHeight = (int) typedArray.getDimension(R.styleable.VerticalTabLayout_tab_height, LayoutParams.WRAP_CONTENT);
@@ -631,6 +638,7 @@ public class VerticalTabLayout extends ScrollView {
     private class OnTabPageChangeListener implements ViewPager.OnPageChangeListener {
         private int mPreviousScrollState;
         private int mScrollState;
+        boolean mUpdataIndicator;
 
         public OnTabPageChangeListener() {
         }
@@ -639,14 +647,14 @@ public class VerticalTabLayout extends ScrollView {
         public void onPageScrollStateChanged(int state) {
             mPreviousScrollState = mScrollState;
             mScrollState = state;
+            mUpdataIndicator = !(mScrollState == SCROLL_STATE_SETTLING
+                    && mPreviousScrollState == SCROLL_STATE_IDLE);
         }
 
         @Override
         public void onPageScrolled(int position, float positionOffset,
                                    int positionOffsetPixels) {
-            boolean updataIndicator = !(mScrollState == SCROLL_STATE_SETTLING
-                    && mPreviousScrollState == SCROLL_STATE_IDLE);
-            if (updataIndicator) {
+            if (mUpdataIndicator) {
                 mTabStrip.moveIndicator(positionOffset + position);
             }
         }
@@ -654,7 +662,7 @@ public class VerticalTabLayout extends ScrollView {
         @Override
         public void onPageSelected(int position) {
             if (position != getSelectedTabPosition()) {
-                setTabSelected(position, false, false);
+                setTabSelected(position, !mUpdataIndicator, true);
             }
         }
     }

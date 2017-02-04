@@ -3,7 +3,6 @@ package q.rorbin.verticaltablayout.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -23,22 +22,18 @@ public class QTabView extends TabView {
     private ImageView mIcon;
     private TextView mTitle;
     private QBadgeView mBadgeView;
-    //    private TextView mBadge;
     private int mMinHeight;
     private TabIcon mTabIcon;
     private TabTitle mTabTitle;
     private TabBadge mTabBadge;
     private boolean mChecked;
     private LinearLayout mContainer;
-    private GradientDrawable gd;
     private Drawable mBackground;
 
 
     public QTabView(Context context) {
         super(context);
         mContext = context;
-        gd = new GradientDrawable();
-        gd.setColor(0xFFE84E40);
         mMinHeight = DisplayUtil.dp2px(context, 30);
         mTabIcon = new TabIcon.Builder().build();
         mTabTitle = new TabTitle.Builder().build();
@@ -77,10 +72,10 @@ public class QTabView extends TabView {
     private void initBadge() {
         if (mBadgeView != null) removeView(mBadgeView);
         mBadgeView = QBadgeView.bindTab(mContext, this);
-        mBadgeView.setBadgeBackgroundColor(mTabBadge.getColorBackground());
+        mBadgeView.setBadgeBackgroundColor(mTabBadge.getBackgroundColor());
         mBadgeView.setBadgeGravity(mTabBadge.getBadgeGravity());
         mBadgeView.setBadgeNumber(mTabBadge.getBadgeNumber());
-        mBadgeView.setBadgeNumberColor(mTabBadge.getColorBadgeNumber());
+        mBadgeView.setBadgeNumberColor(mTabBadge.getBadgeNumberColor());
         mBadgeView.setBadgeNumberSize(mTabBadge.getBadgeNumberSize(), true);
         mBadgeView.setBadgePadding(mTabBadge.getBadgePadding(), true);
         mBadgeView.setExactMode(mTabBadge.isExactMode());
@@ -114,12 +109,6 @@ public class QTabView extends TabView {
         }
         requestContainerLayout(mTabIcon.getIconGravity());
     }
-
-//    @Override
-//    public QTabView setBadge(int num) {
-//        getBadgeView().setBadgeNumber(num);
-//        return this;
-//    }
 
     @Override
     public QTabView setBadge(TabBadge badge) {
@@ -231,7 +220,7 @@ public class QTabView extends TabView {
     private void requestContainerLayout(int gravity) {
         mContainer.removeAllViews();
         switch (gravity) {
-            case Gravity.LEFT:
+            case Gravity.START:
                 mContainer.setOrientation(LinearLayout.HORIZONTAL);
                 if (mIcon != null) {
                     mContainer.addView(mIcon);
@@ -253,7 +242,7 @@ public class QTabView extends TabView {
                 if (mTitle != null)
                     mContainer.addView(mTitle);
                 break;
-            case Gravity.RIGHT:
+            case Gravity.END:
                 mContainer.setOrientation(LinearLayout.HORIZONTAL);
                 if (mTitle != null)
                     mContainer.addView(mTitle);

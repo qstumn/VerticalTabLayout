@@ -363,9 +363,12 @@ public class QBadgeView extends View implements Badge {
         }
     }
 
-    private void animateHide(PointF center){
+    private void animateHide(PointF center) {
+        if (mBadgeNumber == 0) {
+            return;
+        }
         if (mAnimator == null || !mAnimator.isRunning()) {
-            mAnimator = BadgeAnimator.startBomb(createBadgeBitmap(), center, this);
+            mAnimator = BadgeAnimator.start(createBadgeBitmap(), center, this);
             setBadgeNumber(0);
         }
     }
