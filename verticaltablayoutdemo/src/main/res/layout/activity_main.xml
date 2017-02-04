@@ -56,7 +56,7 @@
         <q.rorbin.verticaltablayout.VerticalTabLayout
             android:id="@+id/tablayout"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#EDEDED"
             android:visibility="visible"
@@ -64,7 +64,6 @@
             app:indicator_gravity="fill"
             app:tab_height="50dp"
             app:tab_mode="scrollable" />
-
     </LinearLayout>
 
     <android.support.v4.view.ViewPager

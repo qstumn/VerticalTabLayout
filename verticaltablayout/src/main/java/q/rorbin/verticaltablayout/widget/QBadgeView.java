@@ -94,9 +94,10 @@ public class QBadgeView extends View implements Badge {
         mInnertangentPoints = new ArrayList<>();
         mBadgeNumberPaint = new TextPaint();
         mBadgeNumberPaint.setAntiAlias(true);
-        mBadgeNumberPaint.setStyle(Paint.Style.FILL);
+        mBadgeNumberPaint.setFakeBoldText(true);
         mBadgeBackgroundPaint = new Paint();
         mBadgeBackgroundPaint.setAntiAlias(true);
+        mBadgeBackgroundPaint.setStyle(Paint.Style.FILL);
         mColorBackground = 0xFFE84E40;
         mColorBadgeNumber = 0xFFFFFFFF;
         mBadgeNumberSize = DisplayUtil.dp2px(getContext(), 10);
