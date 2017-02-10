@@ -158,7 +158,7 @@ public class QTabView extends TabView {
         if (resId == 0) {
             setDefaultBackground();
         } else if (resId <= 0) {
-            setBackground(null);
+            setBackgroundDrawable(null);
         } else {
             mContainer.setBackgroundResource(resId);
         }
@@ -197,6 +197,10 @@ public class QTabView extends TabView {
 
     @Override
     public void setBackground(Drawable background) {
+        setBackgroundDrawable(background);
+    }
+
+    public void setBackgroundDrawable(Drawable background) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             mContainer.setBackground(background);
         } else {
@@ -211,7 +215,7 @@ public class QTabView extends TabView {
 
     private void setDefaultBackground() {
         if (getBackground() != mDefaultBackground) {
-            setBackground(mDefaultBackground);
+            setBackgroundDrawable(mDefaultBackground);
         }
     }
 
