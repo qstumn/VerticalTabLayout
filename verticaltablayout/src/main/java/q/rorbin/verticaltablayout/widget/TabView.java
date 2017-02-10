@@ -8,6 +8,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import q.rorbin.badgeview.Badge;
+
 /**
  * @author chqiu
  *         Email:qstumn@163.com
@@ -217,6 +219,10 @@ public abstract class TabView extends FrameLayout implements Checkable {
             return mBuilder.exactMode;
         }
 
+        public boolean isShowShadow() {
+            return mBuilder.showShadow;
+        }
+
         public Badge.OnDragStateChangedListener getOnDragStateChangedListener() {
             return mBuilder.dragStateChangedListener;
         }
@@ -230,6 +236,7 @@ public abstract class TabView extends FrameLayout implements Checkable {
             private int badgeGravity;
             private int gravityOffset;
             private boolean exactMode;
+            private boolean showShadow;
             private Badge.OnDragStateChangedListener dragStateChangedListener;
 
             public Builder() {
@@ -241,10 +248,16 @@ public abstract class TabView extends FrameLayout implements Checkable {
                 badgeGravity = Gravity.END | Gravity.TOP;
                 gravityOffset = 5;
                 exactMode = false;
+                showShadow = true;
             }
 
             public TabBadge build() {
                 return new TabBadge(this);
+            }
+
+            public Builder setShowShadow(boolean showShadow) {
+                this.showShadow = showShadow;
+                return this;
             }
 
             public Builder setOnDragStateChangedListener(Badge.OnDragStateChangedListener dragStateChangedListener) {

@@ -3,14 +3,12 @@ package q.rorbin.verticaltablayout.util;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 
 import java.util.List;
 
 import q.rorbin.verticaltablayout.VerticalTabLayout;
 import q.rorbin.verticaltablayout.widget.TabView;
 
-import static android.R.attr.fragment;
 
 
 /**
@@ -41,9 +39,9 @@ public class TabFragmentManager {
     public void changeFragment() {
         FragmentTransaction ft = mManager.beginTransaction();
         int position = mTabLayout.getSelectedTabPosition();
+        List<Fragment> addedFragments = mManager.getFragments();
         for (int i = 0; i < mFragments.size(); i++) {
             Fragment fragment = mFragments.get(i);
-            List<Fragment> addedFragments = mManager.getFragments();
             if ((addedFragments == null || !addedFragments.contains(fragment)) && mContainerResid != 0) {
                 ft.add(mContainerResid, fragment);
             }
@@ -55,6 +53,7 @@ public class TabFragmentManager {
             }
         }
         ft.commit();
+        mManager.executePendingTransactions();
     }
 
     public void detach() {
@@ -63,6 +62,7 @@ public class TabFragmentManager {
             ft.remove(fragment);
         }
         ft.commit();
+        mManager.executePendingTransactions();
         mManager = null;
         mFragments = null;
         mTabLayout.removeOnTabSelectedListener(mListener);

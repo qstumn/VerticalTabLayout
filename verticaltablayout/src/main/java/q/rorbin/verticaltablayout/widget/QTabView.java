@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import q.rorbin.badgeview.Badge;
+import q.rorbin.badgeview.QBadgeView;
 import q.rorbin.verticaltablayout.util.DisplayUtil;
 
 /**
@@ -21,14 +23,14 @@ public class QTabView extends TabView {
     private Context mContext;
     private ImageView mIcon;
     private TextView mTitle;
-    private QBadgeView mBadgeView;
+    private TabBadgeView mBadgeView;
     private int mMinHeight;
     private TabIcon mTabIcon;
     private TabTitle mTabTitle;
     private TabBadge mTabBadge;
     private boolean mChecked;
     private LinearLayout mContainer;
-    private Drawable mBackground;
+    private Drawable mDefaultBackground;
 
 
     public QTabView(Context context) {
@@ -39,6 +41,15 @@ public class QTabView extends TabView {
         mTabTitle = new TabTitle.Builder().build();
         mTabBadge = new TabBadge.Builder().build();
         initView();
+        int[] attrs;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            attrs = new int[]{android.R.attr.selectableItemBackgroundBorderless};
+        } else {
+            attrs = new int[]{android.R.attr.selectableItemBackground};
+        }
+        TypedArray a = mContext.getTheme().obtainStyledAttributes(attrs);
+        mDefaultBackground = a.getDrawable(0);
+        a.recycle();
         setDefaultBackground();
     }
 
@@ -71,7 +82,7 @@ public class QTabView extends TabView {
 
     private void initBadge() {
         if (mBadgeView != null) removeView(mBadgeView);
-        mBadgeView = QBadgeView.bindTab(mContext, this);
+        mBadgeView = new TabBadgeView(mContext).bindTab(this);
         mBadgeView.setBadgeBackgroundColor(mTabBadge.getBackgroundColor());
         mBadgeView.setBadgeGravity(mTabBadge.getBadgeGravity());
         mBadgeView.setBadgeNumber(mTabBadge.getBadgeNumber());
@@ -80,6 +91,7 @@ public class QTabView extends TabView {
         mBadgeView.setBadgePadding(mTabBadge.getBadgePadding(), true);
         mBadgeView.setExactMode(mTabBadge.isExactMode());
         mBadgeView.setGravityOffset(mTabBadge.getGravityOffset(), true);
+        mBadgeView.setShowShadow(mTabBadge.isShowShadow());
         mBadgeView.setOnDragStateChangedListener(mTabBadge.getOnDragStateChangedListener());
     }
 
@@ -198,18 +210,8 @@ public class QTabView extends TabView {
     }
 
     private void setDefaultBackground() {
-        if (mBackground == null) {
-            int[] attrs = new int[]{android.R.attr.selectableItemBackground};
-            TypedArray a = mContext.getTheme().obtainStyledAttributes(attrs);
-            mBackground = a.getDrawable(0);
-            a.recycle();
-        }
-        if (getBackground() != mBackground) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                mContainer.setBackground(mBackground);
-            } else {
-                mContainer.setBackgroundDrawable(mBackground);
-            }
+        if (getBackground() != mDefaultBackground) {
+            setBackground(mDefaultBackground);
         }
     }
 

@@ -5,7 +5,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +14,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import q.rorbin.verticaltablayout.adapter.SimpleTabAdapter;
+import q.rorbin.badgeview.Badge;
 import q.rorbin.verticaltablayout.adapter.TabAdapter;
 import q.rorbin.verticaltablayout.VerticalTabLayout;
-import q.rorbin.verticaltablayout.util.DisplayUtil;
-import q.rorbin.verticaltablayout.widget.Badge;
-import q.rorbin.verticaltablayout.widget.QTabView;
 import q.rorbin.verticaltablayout.widget.TabView;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,27 +41,11 @@ public class MainActivity extends AppCompatActivity {
         tablayout.setTabBadge(2, -1);
         tablayout.setTabBadge(3, -1);
         tablayout.setTabBadge(4, -1);
-        tablayout.addOnTabSelectedListener(new VerticalTabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabView tab, int position) {
-                if (position == 5) {
-                    tablayout.getTabAt(7).getBadgeView().hide(true);
-                } else if (position == 4) {
-                    tablayout.getTabAt(7).getBadgeView().setBadgeNumber(32);
-                }
-            }
-
-            @Override
-            public void onTabReselected(TabView tab, int position) {
-
-            }
-        });
     }
 
     private void initTab1() {
         VerticalTabLayout tablayout = (VerticalTabLayout) findViewById(R.id.tablayout1);
         tablayout.setupWithViewPager(viewpager);
-
     }
 
     private void initTab2() {

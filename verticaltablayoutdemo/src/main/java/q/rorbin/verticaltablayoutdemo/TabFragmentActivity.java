@@ -7,8 +7,8 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.List;
 
-import q.rorbin.verticaltablayout.adapter.TabAdapter;
 import q.rorbin.verticaltablayout.VerticalTabLayout;
+import q.rorbin.verticaltablayout.adapter.TabAdapter;
 import q.rorbin.verticaltablayout.widget.QTabView;
 
 public class TabFragmentActivity extends AppCompatActivity {
@@ -47,8 +47,8 @@ public class TabFragmentActivity extends AppCompatActivity {
                         return 0;
                     }
                 });
+        tabLayout.setTabSelected(6);
     }
-
 
     private List<Fragment> getFragments() {
         List<Fragment> fragments = new ArrayList<>();
