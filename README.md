@@ -124,6 +124,9 @@ app:tab_margin | setTabMargin | Tab间距
 	int tabPosition = 3;
 	int badgeNum=55;
 	tablayout.setTabBadge(tabPosition,badgeNum);
+	Badge badge = tablayout.getTabAt(position).getBadgeView();
+	
+	Badge使用方法请移步https://github.com/qstumn/BadgeView
 ```
 
 ##Change Log History
