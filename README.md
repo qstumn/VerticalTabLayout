@@ -1,7 +1,6 @@
 # VerticalTabLayout
 一个垂直竖向的Android TabLayout    
-![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo.png?raw=true)
-![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo_gif.gif?raw=true)
+![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo.png?raw=true)![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo_gif.gif?raw=true)
 
 ##Change Log
 ```
