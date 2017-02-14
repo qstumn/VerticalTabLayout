@@ -1,6 +1,6 @@
 # VerticalTabLayout
 一个垂直竖向的Android TabLayout    
-![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo.png?raw=true)![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo_gif.gif?raw=true)
+![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo.png?raw=true)  
 
 ##Change Log
 ```
@@ -10,6 +10,7 @@ v1.2.1
 3、对项目包结构进行微调、重构TabView，去除了构造TabTitle时的Context参数要求，增加setTabBadge、getBadgeView等方法
 4、添加了全新的Badge，依赖于https://github.com/qstumn/BadgeView，提供可以高度自由化定制的Badge，调整TabAdapter结构适配新Badge
 ```  
+![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo_gif.gif?raw=true)
 
 ###一些特性
 * 支持自定义Indicator大小
