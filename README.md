@@ -31,7 +31,7 @@ v1.2.1
 
 ## how to use:
 ###1. gradle
-```
+```groovy
 	compile 'q.rorbin:VerticalTabLayout:1.2.1'
 ```
 
