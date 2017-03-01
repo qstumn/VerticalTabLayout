@@ -191,12 +191,12 @@ public abstract class TabView extends FrameLayout implements Checkable {
             return mBuilder.colorBackground;
         }
 
-        public int getBadgeNumberColor() {
-            return mBuilder.colorBadgeNumber;
+        public int getBadgeTextColor() {
+            return mBuilder.colorBadgeText;
         }
 
-        public float getBadgeNumberSize() {
-            return mBuilder.badgeNumberSize;
+        public float getBadgeTextSize() {
+            return mBuilder.badgeTextSize;
         }
 
         public float getBadgePadding() {
@@ -207,12 +207,20 @@ public abstract class TabView extends FrameLayout implements Checkable {
             return mBuilder.badgeNumber;
         }
 
+        public String getBadgeText() {
+            return mBuilder.badgeText;
+        }
+
         public int getBadgeGravity() {
             return mBuilder.badgeGravity;
         }
 
-        public int getGravityOffset() {
-            return mBuilder.gravityOffset;
+        public int getGravityOffsetX() {
+            return mBuilder.gravityOffsetX;
+        }
+
+        public int getGravityOffsetY() {
+            return mBuilder.gravityOffsetY;
         }
 
         public boolean isExactMode() {
@@ -229,24 +237,28 @@ public abstract class TabView extends FrameLayout implements Checkable {
 
         public static class Builder {
             private int colorBackground;
-            private int colorBadgeNumber;
-            private float badgeNumberSize;
+            private int colorBadgeText;
+            private float badgeTextSize;
             private float badgePadding;
             private int badgeNumber;
+            private String badgeText;
             private int badgeGravity;
-            private int gravityOffset;
+            private int gravityOffsetX;
+            private int gravityOffsetY;
             private boolean exactMode;
             private boolean showShadow;
             private Badge.OnDragStateChangedListener dragStateChangedListener;
 
             public Builder() {
                 colorBackground = 0xFFE84E40;
-                colorBadgeNumber = 0xFFFFFFFF;
-                badgeNumberSize = 10;
+                colorBadgeText = 0xFFFFFFFF;
+                badgeTextSize = 10;
                 badgePadding = 4f;
                 badgeNumber = 0;
+                badgeText = null;
                 badgeGravity = Gravity.END | Gravity.TOP;
-                gravityOffset = 5;
+                gravityOffsetX = 5;
+                gravityOffsetY = 5;
                 exactMode = false;
                 showShadow = true;
             }
@@ -275,16 +287,6 @@ public abstract class TabView extends FrameLayout implements Checkable {
                 return this;
             }
 
-            public Builder setBadgeNumberColor(int colorBadgeNumber) {
-                this.colorBadgeNumber = colorBadgeNumber;
-                return this;
-            }
-
-            public Builder setBadgeNumberSize(float spValue) {
-                this.badgeNumberSize = spValue;
-                return this;
-            }
-
             public Builder setBadgePadding(float dpValue) {
                 this.badgePadding = dpValue;
                 return this;
@@ -292,20 +294,34 @@ public abstract class TabView extends FrameLayout implements Checkable {
 
             public Builder setBadgeNumber(int badgeNumber) {
                 this.badgeNumber = badgeNumber;
+                this.badgeText = null;
                 return this;
             }
 
-            /**
-             * @param badgeGravity only support Gravity.START | Gravity.TOP , Gravity.END | Gravity.TOP ,
-             *                     Gravity.START | Gravity.BOTTOM , Gravity.END | Gravity.BOTTOM , Gravity.CENTER
-             */
             public Builder setBadgeGravity(int badgeGravity) {
                 this.badgeGravity = badgeGravity;
                 return this;
             }
 
-            public Builder setGravityOffset(int dpValue) {
-                this.gravityOffset = dpValue;
+            public Builder setBadgeTextColor(int colorBadgeText) {
+                this.colorBadgeText = colorBadgeText;
+                return this;
+            }
+
+            public Builder setBadgeTextSize(float badgeTextSize) {
+                this.badgeTextSize = badgeTextSize;
+                return this;
+            }
+
+            public Builder setBadgeText(String badgeText) {
+                this.badgeText = badgeText;
+                this.badgeNumber = 0;
+                return this;
+            }
+
+            public Builder setGravityOffset(int offsetX, int offsetY) {
+                this.gravityOffsetX = offsetX;
+                this.gravityOffsetY = offsetY;
                 return this;
             }
         }

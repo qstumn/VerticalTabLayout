@@ -104,7 +104,7 @@ public class VerticalTabLayout extends ScrollView {
 
     private void initTabStrip() {
         mTabStrip = new TabStrip(mContext);
-        addView(mTabStrip, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        addView(mTabStrip, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
     }
 
     public void removeAllTabs() {

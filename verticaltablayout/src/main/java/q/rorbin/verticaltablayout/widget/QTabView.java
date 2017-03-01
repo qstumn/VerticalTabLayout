@@ -5,8 +5,10 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Checkable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,6 +16,8 @@ import android.widget.TextView;
 import q.rorbin.badgeview.Badge;
 import q.rorbin.badgeview.QBadgeView;
 import q.rorbin.verticaltablayout.util.DisplayUtil;
+
+import static android.R.attr.checked;
 
 /**
  * @author chqiu
@@ -29,7 +33,7 @@ public class QTabView extends TabView {
     private TabTitle mTabTitle;
     private TabBadge mTabBadge;
     private boolean mChecked;
-    private LinearLayout mContainer;
+    private TabViewContainer mContainer;
     private Drawable mDefaultBackground;
 
 
@@ -53,25 +57,16 @@ public class QTabView extends TabView {
         setDefaultBackground();
     }
 
-    @Override
-    protected int[] onCreateDrawableState(int extraSpace) {
-        final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
-        if (isChecked()) {
-            mergeDrawableStates(drawableState, new int[]{android.R.attr.state_checked});
-        }
-        return drawableState;
-    }
-
     private void initView() {
         initContainer();
         initIconView();
         initTitleView();
-        addView(mContainer);
+        addView(mContainer, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         initBadge();
     }
 
     private void initContainer() {
-        mContainer = new LinearLayout(mContext);
+        mContainer = new TabViewContainer(mContext);
         mContainer.setOrientation(LinearLayout.HORIZONTAL);
         mContainer.setMinimumHeight(mMinHeight);
         mContainer.setPadding(DisplayUtil.dp2px(mContext, 5), DisplayUtil.dp2px(mContext, 5),
@@ -85,12 +80,17 @@ public class QTabView extends TabView {
         mBadgeView = new TabBadgeView(mContext).bindTab(this);
         mBadgeView.setBadgeBackgroundColor(mTabBadge.getBackgroundColor());
         mBadgeView.setBadgeGravity(mTabBadge.getBadgeGravity());
-        mBadgeView.setBadgeNumber(mTabBadge.getBadgeNumber());
-        mBadgeView.setBadgeNumberColor(mTabBadge.getBadgeNumberColor());
-        mBadgeView.setBadgeNumberSize(mTabBadge.getBadgeNumberSize(), true);
+        if (mTabBadge.getBadgeNumber() != 0) {
+            mBadgeView.setBadgeNumber(mTabBadge.getBadgeNumber());
+        }
+        if (mTabBadge.getBadgeText() != null) {
+            mBadgeView.setBadgeText(mTabBadge.getBadgeText());
+        }
+        mBadgeView.setBadgeTextColor(mTabBadge.getBadgeTextColor());
+        mBadgeView.setBadgeTextSize(mTabBadge.getBadgeTextSize(), true);
         mBadgeView.setBadgePadding(mTabBadge.getBadgePadding(), true);
         mBadgeView.setExactMode(mTabBadge.isExactMode());
-        mBadgeView.setGravityOffset(mTabBadge.getGravityOffset(), true);
+        mBadgeView.setGravityOffset(mTabBadge.getGravityOffsetX(), mTabBadge.getGravityOffsetY(), true);
         mBadgeView.setShowShadow(mTabBadge.isShowShadow());
         mBadgeView.setOnDragStateChangedListener(mTabBadge.getOnDragStateChangedListener());
     }
@@ -104,7 +104,7 @@ public class QTabView extends TabView {
         mTitle.setTextSize(mTabTitle.getTitleTextSize());
         mTitle.setText(mTabTitle.getContent());
         mTitle.setGravity(Gravity.CENTER);
-        mTitle.setSingleLine();
+//        mTitle.setSingleLine();
         mTitle.setEllipsize(TextUtils.TruncateAt.END);
         requestContainerLayout(mTabIcon.getIconGravity());
     }
@@ -277,6 +277,7 @@ public class QTabView extends TabView {
     @Override
     public void setChecked(boolean checked) {
         mChecked = checked;
+        setSelected(checked);
         refreshDrawableState();
         if (mChecked) {
             mTitle.setTextColor(mTabTitle.getColorSelected());
@@ -317,5 +318,10 @@ public class QTabView extends TabView {
         });
     }
 
+    private class TabViewContainer extends LinearLayout {
 
+        public TabViewContainer(Context context) {
+            super(context);
+        }
+    }
 }

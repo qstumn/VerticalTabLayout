@@ -9,7 +9,7 @@
 
     <q.rorbin.verticaltablayout.VerticalTabLayout
         android:id="@+id/tablayout"
-        android:layout_width="50dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent" />
 
     <FrameLayout
