@@ -2,7 +2,7 @@
 一个垂直竖向的Android TabLayout    
 ![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo.png?raw=true)  
 
-##Change Log
+## Change Log
 ```
 v1.2.1
 1、修复在onCreate中调用setTabSelected时Indicator没有正确移动的BUG
@@ -12,7 +12,7 @@ v1.2.1
 ```  
 ![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo_gif.gif?raw=true)
 
-###一些特性
+### 一些特性
 * 支持自定义Indicator大小
 
 * 支持自定义Indicator位置
@@ -30,13 +30,13 @@ v1.2.1
 * 很方便的和Fragment结合使用
 
 ## how to use:
-###1. gradle
-```
+### 1. gradle
+```groovy
 	compile 'q.rorbin:VerticalTabLayout:1.2.1'
 ```
 
-###2. xml
-```
+### 2. xml
+```xml
     <q.rorbin.verticaltablayout.VerticalTabLayout
         android:id="@+id/tablayout"
         android:layout_width="match_parent"
@@ -48,7 +48,7 @@ v1.2.1
         app:tab_mode="scrollable" />
 ```    
 
-###3. 属性说明
+### 3. 属性说明
 
 xml | code | 说明
 ---|---|---
@@ -60,9 +60,9 @@ app:tab_mode | setTabMode | Tab高度模式
 app:tab_height | setTabHeight | Tab高度
 app:tab_margin | setTabMargin | Tab间距
 
-###4. 创建Tab的方式
+### 4. 创建Tab的方式
 - 普通方式创建
-```
+```java
 	tablayout.addTab(new QTabView(context))
 	tablayout.addOnTabSelectedListener(new VerticalTabLayout.OnTabSelectedListener() {
             @Override
@@ -77,7 +77,7 @@ app:tab_margin | setTabMargin | Tab间距
         });
 ```
 - Adapter方式创建			
-```
+```java
 	tablayout.setTabAdapter(new TabAdapter() {
             @Override
             public int getCount() {
@@ -110,17 +110,17 @@ app:tab_margin | setTabMargin | Tab间距
 	TabBadge、TabIcon、TabTitle使用build模式创建。
   
 - 结合ViewPager使用
-```
+```java
 	tablayout.setupWithViewPager(viewpager);
 ```
 	ViewPager的PagerAdapter可选择实现TabAdapter接口
       
 - 结合Fragment使用
-```
+```java
 	tabLayout.setupWithFragment(FragmentManager manager, int containerResid, List<Fragment> fragments, TabAdapter adapter)
 ```
-###5. 设置badge
-```
+### 5. 设置badge
+```java
 	int tabPosition = 3;
 	int badgeNum=55;
 	tablayout.setTabBadge(tabPosition,badgeNum);
@@ -129,7 +129,7 @@ app:tab_margin | setTabMargin | Tab间距
 	Badge使用方法请移步https://github.com/qstumn/BadgeView
 ```
 
-##Change Log History
+## Change Log History
 ```
 v1.2.0
 1、修复了tabmode为fixed的时候Indicator初始位置显示不正确的问题
@@ -147,7 +147,7 @@ v1.1.0
 4. 为Indicator的移动添加了动画
 ```
 
-#LICENSE
+# LICENSE
 ```
 Copyright 2016, RorbinQiu
 
