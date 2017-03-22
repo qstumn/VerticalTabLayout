@@ -34,8 +34,8 @@
             android:visibility="visible"
             app:indicator_color="#FFFFFF"
             app:indicator_corners="5dp"
+            app:tab_height="50dp"
             app:indicator_gravity="right"
-            app:tab_height="60dp"
             app:tab_mode="scrollable" />
 
         <q.rorbin.verticaltablayout.VerticalTabLayout
@@ -46,11 +46,11 @@
             android:background="#009687"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:visibility="visible"
             app:indicator_color="#115E56"
-            app:indicator_corners="100dp"
+            app:indicator_corners="20dp"
             app:indicator_gravity="fill"
-            app:tab_margin="20dp"
+            app:tab_margin="10dp"
+            android:visibility="visible"
             app:tab_mode="scrollable" />
 
         <q.rorbin.verticaltablayout.VerticalTabLayout

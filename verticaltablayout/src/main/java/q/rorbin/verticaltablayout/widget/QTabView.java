@@ -2,6 +2,7 @@ package q.rorbin.verticaltablayout.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
@@ -59,9 +60,11 @@ public class QTabView extends TabView {
 
     private void initView() {
         initContainer();
+        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        params.gravity = Gravity.CENTER;
+        addView(mContainer, params);
         initIconView();
         initTitleView();
-        addView(mContainer, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         initBadge();
     }
 
@@ -78,21 +81,45 @@ public class QTabView extends TabView {
     private void initBadge() {
         if (mBadgeView != null) removeView(mBadgeView);
         mBadgeView = new TabBadgeView(mContext).bindTab(this);
-        mBadgeView.setBadgeBackgroundColor(mTabBadge.getBackgroundColor());
-        mBadgeView.setBadgeGravity(mTabBadge.getBadgeGravity());
+        if (mTabBadge.getBackgroundColor() != 0xFFE84E40) {
+            mBadgeView.setBadgeBackgroundColor(mTabBadge.getBackgroundColor());
+        }
+        if (mTabBadge.getBadgeTextColor() != 0xFFFFFFFF) {
+            mBadgeView.setBadgeTextColor(mTabBadge.getBadgeTextColor());
+        }
+        if (mTabBadge.getStrokeColor() != Color.TRANSPARENT || mTabBadge.getStrokeWidth() != 0) {
+            mBadgeView.stroke(mTabBadge.getStrokeColor(), mTabBadge.getStrokeWidth(), true);
+        }
+        if (mTabBadge.getDrawableBackground() != null || mTabBadge.isDrawableBackgroundClip()) {
+            mBadgeView.setBadgeBackground(mTabBadge.getDrawableBackground(), mTabBadge.isDrawableBackgroundClip());
+        }
+        if (mTabBadge.getBadgeTextSize() != 11) {
+            mBadgeView.setBadgeTextSize(mTabBadge.getBadgeTextSize(), true);
+        }
+        if (mTabBadge.getBadgePadding() != 5) {
+            mBadgeView.setBadgePadding(mTabBadge.getBadgePadding(), true);
+        }
         if (mTabBadge.getBadgeNumber() != 0) {
             mBadgeView.setBadgeNumber(mTabBadge.getBadgeNumber());
         }
         if (mTabBadge.getBadgeText() != null) {
             mBadgeView.setBadgeText(mTabBadge.getBadgeText());
         }
-        mBadgeView.setBadgeTextColor(mTabBadge.getBadgeTextColor());
-        mBadgeView.setBadgeTextSize(mTabBadge.getBadgeTextSize(), true);
-        mBadgeView.setBadgePadding(mTabBadge.getBadgePadding(), true);
-        mBadgeView.setExactMode(mTabBadge.isExactMode());
-        mBadgeView.setGravityOffset(mTabBadge.getGravityOffsetX(), mTabBadge.getGravityOffsetY(), true);
-        mBadgeView.setShowShadow(mTabBadge.isShowShadow());
-        mBadgeView.setOnDragStateChangedListener(mTabBadge.getOnDragStateChangedListener());
+        if (mTabBadge.getBadgeGravity() != (Gravity.END | Gravity.TOP)) {
+            mBadgeView.setBadgeGravity(mTabBadge.getBadgeGravity());
+        }
+        if (mTabBadge.getGravityOffsetX() != 5 || mTabBadge.getGravityOffsetY() != 5) {
+            mBadgeView.setGravityOffset(mTabBadge.getGravityOffsetX(), mTabBadge.getGravityOffsetY(), true);
+        }
+        if (mTabBadge.isExactMode()) {
+            mBadgeView.setExactMode(mTabBadge.isExactMode());
+        }
+        if (!mTabBadge.isShowShadow()) {
+            mBadgeView.setShowShadow(mTabBadge.isShowShadow());
+        }
+        if (mTabBadge.getOnDragStateChangedListener() != null) {
+            mBadgeView.setOnDragStateChangedListener(mTabBadge.getOnDragStateChangedListener());
+        }
     }
 
     private void initTitleView() {
@@ -104,7 +131,6 @@ public class QTabView extends TabView {
         mTitle.setTextSize(mTabTitle.getTitleTextSize());
         mTitle.setText(mTabTitle.getContent());
         mTitle.setGravity(Gravity.CENTER);
-//        mTitle.setSingleLine();
         mTitle.setEllipsize(TextUtils.TruncateAt.END);
         requestContainerLayout(mTabIcon.getIconGravity());
     }
@@ -121,6 +147,58 @@ public class QTabView extends TabView {
         }
         requestContainerLayout(mTabIcon.getIconGravity());
     }
+
+    private void requestContainerLayout(int gravity) {
+        mContainer.removeAllViews();
+        switch (gravity) {
+            case Gravity.START:
+                mContainer.setOrientation(LinearLayout.HORIZONTAL);
+                if (mIcon != null) {
+                    mContainer.addView(mIcon);
+                    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mIcon.getLayoutParams();
+                    lp.setMargins(0, 0, mTabIcon.getMargin(), 0);
+                    mIcon.setLayoutParams(lp);
+                }
+                if (mTitle != null)
+                    mContainer.addView(mTitle);
+                break;
+            case Gravity.TOP:
+                mContainer.setOrientation(LinearLayout.VERTICAL);
+                if (mIcon != null) {
+                    mContainer.addView(mIcon);
+                    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mIcon.getLayoutParams();
+                    lp.setMargins(0, 0, 0, mTabIcon.getMargin());
+                    mIcon.setLayoutParams(lp);
+                }
+                if (mTitle != null)
+                    mContainer.addView(mTitle);
+                break;
+            case Gravity.END:
+                mContainer.setOrientation(LinearLayout.HORIZONTAL);
+                if (mTitle != null)
+                    mContainer.addView(mTitle);
+                if (mIcon != null) {
+                    mContainer.addView(mIcon);
+                    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mIcon.getLayoutParams();
+                    lp.setMargins(mTabIcon.getMargin(), 0, 0, 0);
+                    mIcon.setLayoutParams(lp);
+                }
+
+                break;
+            case Gravity.BOTTOM:
+                mContainer.setOrientation(LinearLayout.VERTICAL);
+                if (mTitle != null)
+                    mContainer.addView(mTitle);
+                if (mIcon != null) {
+                    mContainer.addView(mIcon);
+                    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mIcon.getLayoutParams();
+                    lp.setMargins(0, mTabIcon.getMargin(), 0, 0);
+                    mIcon.setLayoutParams(lp);
+                }
+                break;
+        }
+    }
+
 
     @Override
     public QTabView setBadge(TabBadge badge) {
@@ -221,57 +299,6 @@ public class QTabView extends TabView {
 
     public Drawable getBackground() {
         return mContainer.getBackground();
-    }
-
-    private void requestContainerLayout(int gravity) {
-        mContainer.removeAllViews();
-        switch (gravity) {
-            case Gravity.START:
-                mContainer.setOrientation(LinearLayout.HORIZONTAL);
-                if (mIcon != null) {
-                    mContainer.addView(mIcon);
-                    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mIcon.getLayoutParams();
-                    lp.setMargins(0, 0, mTabIcon.getMargin(), 0);
-                    mIcon.setLayoutParams(lp);
-                }
-                if (mTitle != null)
-                    mContainer.addView(mTitle);
-                break;
-            case Gravity.TOP:
-                mContainer.setOrientation(LinearLayout.VERTICAL);
-                if (mIcon != null) {
-                    mContainer.addView(mIcon);
-                    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mIcon.getLayoutParams();
-                    lp.setMargins(0, 0, 0, mTabIcon.getMargin());
-                    mIcon.setLayoutParams(lp);
-                }
-                if (mTitle != null)
-                    mContainer.addView(mTitle);
-                break;
-            case Gravity.END:
-                mContainer.setOrientation(LinearLayout.HORIZONTAL);
-                if (mTitle != null)
-                    mContainer.addView(mTitle);
-                if (mIcon != null) {
-                    mContainer.addView(mIcon);
-                    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mIcon.getLayoutParams();
-                    lp.setMargins(mTabIcon.getMargin(), 0, 0, 0);
-                    mIcon.setLayoutParams(lp);
-                }
-
-                break;
-            case Gravity.BOTTOM:
-                mContainer.setOrientation(LinearLayout.VERTICAL);
-                if (mTitle != null)
-                    mContainer.addView(mTitle);
-                if (mIcon != null) {
-                    mContainer.addView(mIcon);
-                    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mIcon.getLayoutParams();
-                    lp.setMargins(0, mTabIcon.getMargin(), 0, 0);
-                    mIcon.setLayoutParams(lp);
-                }
-                break;
-        }
     }
 
     @Override

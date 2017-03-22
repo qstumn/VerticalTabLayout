@@ -1,6 +1,8 @@
 package q.rorbin.verticaltablayout.widget;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Checkable;
@@ -9,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import q.rorbin.badgeview.Badge;
+
+import static android.R.attr.strokeWidth;
 
 /**
  * @author chqiu
@@ -231,6 +235,22 @@ public abstract class TabView extends FrameLayout implements Checkable {
             return mBuilder.showShadow;
         }
 
+        public Drawable getDrawableBackground() {
+            return mBuilder.drawableBackground;
+        }
+
+        public int getStrokeColor() {
+            return mBuilder.colorStroke;
+        }
+
+        public boolean isDrawableBackgroundClip() {
+            return mBuilder.drawableBackgroundClip;
+        }
+
+        public float getStrokeWidth() {
+            return mBuilder.strokeWidth;
+        }
+
         public Badge.OnDragStateChangedListener getOnDragStateChangedListener() {
             return mBuilder.dragStateChangedListener;
         }
@@ -238,6 +258,10 @@ public abstract class TabView extends FrameLayout implements Checkable {
         public static class Builder {
             private int colorBackground;
             private int colorBadgeText;
+            private int colorStroke;
+            private Drawable drawableBackground;
+            private boolean drawableBackgroundClip;
+            private float strokeWidth;
             private float badgeTextSize;
             private float badgePadding;
             private int badgeNumber;
@@ -252,8 +276,12 @@ public abstract class TabView extends FrameLayout implements Checkable {
             public Builder() {
                 colorBackground = 0xFFE84E40;
                 colorBadgeText = 0xFFFFFFFF;
-                badgeTextSize = 10;
-                badgePadding = 4f;
+                colorStroke = Color.TRANSPARENT;
+                drawableBackground = null;
+                drawableBackgroundClip = false;
+                strokeWidth = 0;
+                badgeTextSize = 11;
+                badgePadding = 5;
                 badgeNumber = 0;
                 badgeText = null;
                 badgeGravity = Gravity.END | Gravity.TOP;
@@ -265,6 +293,18 @@ public abstract class TabView extends FrameLayout implements Checkable {
 
             public TabBadge build() {
                 return new TabBadge(this);
+            }
+
+            public Builder stroke(int color, int strokeWidth) {
+                this.colorStroke = color;
+                this.strokeWidth = strokeWidth;
+                return this;
+            }
+
+            public Builder setDrawableBackground(Drawable drawableBackground, boolean clip) {
+                this.drawableBackground = drawableBackground;
+                this.drawableBackgroundClip = clip;
+                return this;
             }
 
             public Builder setShowShadow(boolean showShadow) {

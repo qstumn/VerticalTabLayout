@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onDragStateChanged(int dragState, Badge badge, View targetView) {
                         if (dragState == STATE_SUCCEED) {
-                            badge.setBadgeNumber(-1);
+                            badge.setBadgeNumber(-1).stroke(0xFFFFFFFF,1,true);
                         }
                     }
                 }).build());
