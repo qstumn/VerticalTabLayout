@@ -2,16 +2,6 @@
 一个垂直竖向的Android TabLayout    
 ![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo.png?raw=true)  
 
-## Change Log
-```
-v1.2.1
-1、修复在onCreate中调用setTabSelected时Indicator没有正确移动的BUG
-2、修复使用setupWithFragment时偶尔会造成无法正确添加Fragment的BUG
-3、对项目包结构进行微调、重构TabView，去除了构造TabTitle时的Context参数要求，增加setTabBadge、getBadgeView等方法
-4、添加了全新的Badge，依赖于https://github.com/qstumn/BadgeView，提供可以高度自由化定制的Badge，调整TabAdapter结构适配新Badge
-```  
-![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo_gif.gif?raw=true)
-
 ### 一些特性
 * 支持自定义Indicator大小
 
@@ -28,6 +18,8 @@ v1.2.1
 * 很方便的和ViewPager结合使用
 
 * 很方便的和Fragment结合使用
+
+![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo_gif.gif?raw=true)
 
 ## how to use:
 ### 1. gradle
