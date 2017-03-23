@@ -1,7 +1,7 @@
 # VerticalTabLayout
 一个垂直竖向的Android TabLayout    
 
-![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo.png?raw=true)![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo_gif.gif?raw=true)
+![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo.png?raw=true)
 
 ### 一些特性
 * 支持自定义Indicator大小
@@ -20,6 +20,7 @@
 
 * 很方便的和Fragment结合使用
 
+![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo_gif.gif?raw=true)
 
 ## how to use:
 ### 1. gradle
