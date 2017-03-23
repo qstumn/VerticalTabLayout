@@ -1,7 +1,4 @@
 package q.rorbin.verticaltablayout;
-
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -16,7 +13,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -32,8 +28,6 @@ import q.rorbin.verticaltablayout.widget.QTabView;
 import q.rorbin.verticaltablayout.widget.TabIndicator;
 import q.rorbin.verticaltablayout.widget.TabView;
 
-import static android.R.attr.y;
-import static android.content.ContentValues.TAG;
 import static android.support.v4.view.ViewPager.SCROLL_STATE_IDLE;
 import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
 
@@ -502,13 +496,6 @@ public class VerticalTabLayout extends ScrollView {
             mIndicatorGravity = mIndicatorGravity == 0 ? Gravity.LEFT : mIndicatorGravity;
             mIndicatorRect = new RectF();
             setIndicatorGravity();
-        }
-
-        private static final String TAG = "qch";
-        @Override
-        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-            Log.i(TAG, "onMeasure: "+getMeasuredHeight());
         }
 
         protected void setIndicatorGravity() {

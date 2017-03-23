@@ -17,13 +17,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        disable 'RestrictedApi'
+    }
 }
 
 publish {
     userOrg = 'qstumn'
     groupId = 'q.rorbin'
     artifactId = 'VerticalTabLayout'
-    publishVersion = '1.2.1'
+    publishVersion = '1.2.2'
     desc = 'This is a vertical direction TabLayout'
     website = 'https://github.com/qstumn/VerticalTabLayout'
 }
