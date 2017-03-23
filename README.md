@@ -2,16 +2,6 @@
 一个垂直竖向的Android TabLayout    
 ![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo.png?raw=true)  
 
-## Change Log
-```
-v1.2.1
-1、修复在onCreate中调用setTabSelected时Indicator没有正确移动的BUG
-2、修复使用setupWithFragment时偶尔会造成无法正确添加Fragment的BUG
-3、对项目包结构进行微调、重构TabView，去除了构造TabTitle时的Context参数要求，增加setTabBadge、getBadgeView等方法
-4、添加了全新的Badge，依赖于https://github.com/qstumn/BadgeView，提供可以高度自由化定制的Badge，调整TabAdapter结构适配新Badge
-```  
-![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo_gif.gif?raw=true)
-
 ### 一些特性
 * 支持自定义Indicator大小
 
@@ -29,12 +19,14 @@ v1.2.1
 
 * 很方便的和Fragment结合使用
 
+![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo_gif.gif?raw=true)
+
 ## how to use:
 ### 1. gradle
 ```groovy
-	compile 'q.rorbin:VerticalTabLayout:1.2.1'
+	compile 'q.rorbin:VerticalTabLayout:VERSION_CODE'
 ```
-
+VERSION_CODE : [here](https://github.com/qstumn/VerticalTabLayout/releases)
 ### 2. xml
 ```xml
     <q.rorbin.verticaltablayout.VerticalTabLayout
@@ -127,24 +119,6 @@ app:tab_margin | setTabMargin | Tab间距
 	Badge badge = tablayout.getTabAt(position).getBadgeView();
 	
 	Badge使用方法请移步https://github.com/qstumn/BadgeView
-```
-
-## Change Log History
-```
-v1.2.0
-1、修复了tabmode为fixed的时候Indicator初始位置显示不正确的问题
-2、修复了结合ViewPager使用时，Indicator没有跟随ViewPager滑动的问题
-3、优化了Indicator的绘制方式，Indicator现在占用更少的内存并且比之前更流畅
-4、现在TabView在没有自定义背景的时候会有默认的背景点击效果，5.0系统以上为水波纹点击效果
-5、现在Badge在超过99的时候会显示99+而不再显示具体数字
-6、添加了getTabCount、getSelectedTabPosition、removeOnTabSelectedListener方法
-7、添加了setupWithFragment方法，适用于不想结合ViewPager使用的场景，VerticalTabLayout会自动在内部控制Fragment的隐藏和显示，可以下载demo查看示例
-	
-v1.1.0
-1. 修复了TabSelectedListener会错误的多次触发的问题
-2. 修复了removeAllTabs方法无法正确的移除掉所有tab的问题
-3. 修改setTabSelectedListener为addTabSelectedListener
-4. 为Indicator的移动添加了动画
 ```
 
 # LICENSE
