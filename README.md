@@ -122,6 +122,8 @@ app:tab_margin | setTabMargin | Tab间距
 	Badge使用方法请移步https://github.com/qstumn/BadgeView
 ```
 
+### 6.更新计划
+ 抽象解耦Indicator,实现绘制任意形状Indicator
 # LICENSE
 ```
 Copyright 2016, RorbinQiu
