@@ -25,7 +25,7 @@
 ## how to use:
 ### 1. gradle
 ```groovy
-	compile 'q.rorbin:VerticalTabLayout:VERSION_CODE'
+	compile 'q.rorbin:VerticalTabLayout:1.2.2'
 ```
 VERSION_CODE : [here](https://github.com/qstumn/VerticalTabLayout/releases)
 ### 2. xml
