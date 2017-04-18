@@ -106,7 +106,8 @@ app:tab_margin | setTabMargin | Tab间距
 ```java
 	tablayout.setupWithViewPager(viewpager);
 ```
-	ViewPager的PagerAdapter可选择实现TabAdapter接口
+ViewPager的PagerAdapter可选择实现TabAdapter接口
+如果您需要使用垂直竖向的ViewPager，强烈推荐您使用：https://github.com/youngkaaa/YViewPagerDemo
       
 - 结合Fragment使用
 ```java
