@@ -1,5 +1,7 @@
 # VerticalTabLayout
-一个垂直竖向的Android TabLayout    
+[ ![Download](https://api.bintray.com/packages/qstumn/maven/VerticalTabLayout/images/download.svg) ](https://bintray.com/qstumn/maven/VerticalTabLayout/_latestVersion)
+
+垂直竖向的Android TabLayout    
 
 ![](https://github.com/qstumn/VerticalTabLayout/blob/master/demo.png?raw=true)
 
