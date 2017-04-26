@@ -18,6 +18,8 @@
 
 * 多种Tab高度设置模式
 
+* Tab支持android:state_selected
+
 * 很方便的和ViewPager结合使用
 
 * 很方便的和Fragment结合使用
