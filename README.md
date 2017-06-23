@@ -29,7 +29,7 @@
 ## how to use:
 ### 1. gradle
 ```groovy
-	compile 'q.rorbin:VerticalTabLayout:1.2.2'
+	compile 'q.rorbin:VerticalTabLayout:1.2.4'
 ```
 VERSION_CODE : [here](https://github.com/qstumn/VerticalTabLayout/releases)
 ### 2. xml
@@ -121,7 +121,7 @@ ViewPager的PagerAdapter可选择实现TabAdapter接口
 ### 5. 设置badge
 ```java
 	int tabPosition = 3;
-	int badgeNum=55;
+	int badgeNum = 55;
 	tablayout.setTabBadge(tabPosition,badgeNum);
 	Badge badge = tablayout.getTabAt(position).getBadgeView();
 	
