@@ -1,4 +1,5 @@
 package q.rorbin.verticaltablayout;
+
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -25,7 +26,6 @@ import q.rorbin.verticaltablayout.adapter.TabAdapter;
 import q.rorbin.verticaltablayout.util.DisplayUtil;
 import q.rorbin.verticaltablayout.util.TabFragmentManager;
 import q.rorbin.verticaltablayout.widget.QTabView;
-import q.rorbin.verticaltablayout.widget.TabIndicator;
 import q.rorbin.verticaltablayout.widget.TabView;
 
 import static android.support.v4.view.ViewPager.SCROLL_STATE_IDLE;
@@ -44,7 +44,6 @@ public class VerticalTabLayout extends ScrollView {
     private int mIndicatorWidth;
     private int mIndicatorGravity;
     private float mIndicatorCorners;
-    private TabIndicator mIndicator;
     private int mTabMode;
     private int mTabHeight;
 
@@ -245,6 +244,10 @@ public class VerticalTabLayout extends ScrollView {
         getTabAt(tabPosition).getBadgeView().setBadgeNumber(badgeNum);
     }
 
+    public void setTabBadge(int tabPosition, String badgeText) {
+        getTabAt(tabPosition).getBadgeView().setBadgeText(badgeText);
+    }
+
     public void setTabMode(int mode) {
         if (mode != TAB_MODE_FIXED && mode != TAB_MODE_SCROLLABLE) {
             throw new IllegalStateException("only support TAB_MODE_FIXED or TAB_MODE_SCROLLABLE");
@@ -344,6 +347,14 @@ public class VerticalTabLayout extends ScrollView {
         }
     }
 
+//    public void setTabPadding(int padding) {
+//
+//    }
+//
+//    public void setTabPadding(int start, int top, int end, int bottom) {
+//
+//    }
+
     public void addOnTabSelectedListener(OnTabSelectedListener listener) {
         if (listener != null) {
             mTabSelectedListeners.add(listener);
@@ -365,8 +376,6 @@ public class VerticalTabLayout extends ScrollView {
                         .setTitle(adapter.getTitle(i)).setBadge(adapter.getBadge(i))
                         .setBackground(adapter.getBackground(i)));
             }
-        } else {
-            removeAllTabs();
         }
     }
 
@@ -453,13 +462,10 @@ public class VerticalTabLayout extends ScrollView {
         removeAllTabs();
         if (mPagerAdapter != null) {
             final int adapterCount = mPagerAdapter.getCount();
-            for (int i = 0; i < adapterCount; i++) {
-                if (mPagerAdapter instanceof TabAdapter) {
-                    mTabAdapter = (TabAdapter) mPagerAdapter;
-                    addTab(new QTabView(mContext).setIcon(mTabAdapter.getIcon(i))
-                            .setTitle(mTabAdapter.getTitle(i)).setBadge(mTabAdapter.getBadge(i))
-                            .setBackground(mTabAdapter.getBackground(i)));
-                } else {
+            if (mPagerAdapter instanceof TabAdapter) {
+                setTabAdapter((TabAdapter) mPagerAdapter);
+            } else {
+                for (int i = 0; i < adapterCount; i++) {
                     String title = mPagerAdapter.getPageTitle(i) == null ? "tab" + i : mPagerAdapter.getPageTitle(i).toString();
                     addTab(new QTabView(mContext).setTitle(
                             new QTabView.TabTitle.Builder().setContent(title).build()));
@@ -602,9 +608,11 @@ public class VerticalTabLayout extends ScrollView {
                             }
                         });
                     }
-                    mIndicatorAnimatorSet = new AnimatorSet();
-                    mIndicatorAnimatorSet.play(endAnime).after(startAnime);
-                    mIndicatorAnimatorSet.start();
+                    if (startAnime != null) {
+                        mIndicatorAnimatorSet = new AnimatorSet();
+                        mIndicatorAnimatorSet.play(endAnime).after(startAnime);
+                        mIndicatorAnimatorSet.start();
+                    }
                 }
             });
         }

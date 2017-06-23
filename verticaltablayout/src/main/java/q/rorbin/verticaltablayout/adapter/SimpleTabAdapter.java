@@ -8,9 +8,7 @@ import q.rorbin.verticaltablayout.widget.TabView;
 
 public abstract class SimpleTabAdapter implements TabAdapter {
     @Override
-    public int getCount() {
-        return 0;
-    }
+    public abstract int getCount();
 
     @Override
     public TabView.TabBadge getBadge(int position) {

@@ -1,24 +1,37 @@
 package q.rorbin.verticaltablayout.widget;
 
 import android.content.Context;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import q.rorbin.badgeview.QBadgeView;
+
 
 /**
  * Created by chqiu on 2017/2/10.
  */
 
 public class TabBadgeView extends QBadgeView {
-    public TabBadgeView(Context context) {
+    private TabBadgeView(Context context) {
         super(context);
     }
 
-    public TabBadgeView bindTab(TabView tab) {
-        tab.addView(this, new TabView.LayoutParams(TabView.LayoutParams.MATCH_PARENT, TabView.LayoutParams.MATCH_PARENT));
-        mTargetView = tab;
-        return this;
+    public static TabBadgeView bindTab(TabView tab) {
+        TabBadgeView badge = null;
+        for (int i = 0; i < tab.getChildCount(); i++) {
+            View child = tab.getChildAt(i);
+            if (child != null && child instanceof TabBadgeView) {
+                badge = (TabBadgeView) child;
+                break;
+            }
+        }
+        if (badge == null) {
+            badge = new TabBadgeView(tab.getContext());
+            tab.addView(badge, new TabView.LayoutParams(TabView.LayoutParams.MATCH_PARENT, TabView.LayoutParams.MATCH_PARENT));
+        }
+        badge.mTargetView = tab;
+        return badge;
     }
 
     @Override
@@ -31,7 +44,9 @@ public class TabBadgeView extends QBadgeView {
                     FrameLayout.LayoutParams.MATCH_PARENT));
         } else {
             if (mTargetView instanceof TabView) {
-                bindTab((TabView) mTargetView);
+                ((TabView) mTargetView).addView(this,
+                        new TabView.LayoutParams(TabView.LayoutParams.MATCH_PARENT,
+                                TabView.LayoutParams.MATCH_PARENT));
             } else {
                 bindTarget(mTargetView);
             }

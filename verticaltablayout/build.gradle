@@ -26,7 +26,7 @@ publish {
     userOrg = 'qstumn'
     groupId = 'q.rorbin'
     artifactId = 'VerticalTabLayout'
-    publishVersion = '1.2.2'
+    publishVersion = '1.2.3'
     desc = 'This is a vertical direction TabLayout'
     website = 'https://github.com/qstumn/VerticalTabLayout'
 }
@@ -34,6 +34,6 @@ publish {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:support-v4:25.2.0'
-    compile 'q.rorbin:badgeview:1.1.0'
+    provided 'com.android.support:support-v4:25.3.0'
+    compile 'q.rorbin:badgeview:1.1.2'
 }

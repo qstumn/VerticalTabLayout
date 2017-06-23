@@ -16,8 +16,10 @@ import java.util.Collections;
 import java.util.List;
 
 import q.rorbin.badgeview.Badge;
+import q.rorbin.badgeview.DisplayUtil;
 import q.rorbin.verticaltablayout.adapter.TabAdapter;
 import q.rorbin.verticaltablayout.VerticalTabLayout;
+import q.rorbin.verticaltablayout.widget.ITabView;
 import q.rorbin.verticaltablayout.widget.TabView;
 
 public class MainActivity extends AppCompatActivity {
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         tablayout.setTabAdapter(new MyTabAdapter());
     }
 
-    class MyTabAdapter implements TabAdapter {
+    private class MyTabAdapter implements TabAdapter {
 
         List<MenuBean> menus;
 
@@ -126,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    class MyPagerAdapter extends PagerAdapter implements TabAdapter {
+    private class MyPagerAdapter extends PagerAdapter implements TabAdapter {
         List<String> titles;
 
         public MyPagerAdapter() {

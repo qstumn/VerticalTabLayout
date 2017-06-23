@@ -34,8 +34,8 @@
             android:visibility="visible"
             app:indicator_color="#FFFFFF"
             app:indicator_corners="5dp"
-            app:tab_height="50dp"
             app:indicator_gravity="right"
+            app:tab_height="50dp"
             app:tab_mode="scrollable" />
 
         <q.rorbin.verticaltablayout.VerticalTabLayout
