@@ -1,3 +1,5 @@
+# 该项目已废弃停止维护, 请不要再您的生产环境中使用
+
 # VerticalTabLayout
 [ ![Download](https://api.bintray.com/packages/qstumn/maven/VerticalTabLayout/images/download.svg) ](https://bintray.com/qstumn/maven/VerticalTabLayout/_latestVersion)
 
